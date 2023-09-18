@@ -43,6 +43,8 @@ const Signup = () => {
         setError("Sign up successful");
         setCookie("Email", user.email);
         setCookie("Token", user.token);
+        setCookie("userID", user.id);
+        setCookie("Name", user.name);
         navigate("/home");
       }
     } catch (error) {

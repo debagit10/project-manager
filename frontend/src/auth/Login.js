@@ -33,6 +33,8 @@ const Login = () => {
       } else {
         setCookie("Email", user.email);
         setCookie("Token", user.token);
+        setCookie("userID", user.userID);
+        setCookie("Name", user.name);
         navigate("/home");
       }
       //console.log(email, password);
