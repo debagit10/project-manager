@@ -139,7 +139,7 @@ app.post("/getTeams", async (req, res) => {
   const { userID } = req.body;
   try {
     const team = await pool.query(
-      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE users.id = $1;",
+      "SELECT teams.team_id, teams.team_name, teams.about, teams.admin, teams.admin_id FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE users.id = $1;",
       [userID]
     );
     res.json(team.rows);
@@ -149,6 +149,115 @@ app.post("/getTeams", async (req, res) => {
         error: "You do not belong to any team yet. Join or create one.",
       });
     }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/viewTeam", async (req, res) => {
+  const { teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id, users.name, users.id FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE team_members.team_id = $1",
+      [teamID]
+    );
+    console.log();
+    res.json(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/addAdmin", async (req, res) => {
+  const { itemID, teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "INSERT INTO min_admin(min_admin_id, team_id) VALUES($1,$2)",
+      [itemID, teamID]
+    );
+    console.log(response);
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/getAdmin", async (req, res) => {
+  const { teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "SELECT users.name FROM min_admin JOIN users ON min_admin.min_admin_id = users.id WHERE team_id = $1",
+      [teamID]
+    );
+    res.json(response.rows);
+    //console.log(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/addProject", async (req, res) => {
+  const {
+    userID,
+    itemID,
+    title,
+    description,
+    document,
+    links,
+    deadline,
+    team,
+  } = req.body;
+
+  const id = uuidv4();
+
+  const date = Date.UTC();
+
+  try {
+    const response = await pool.query(
+      "INSERT INTO projects(project_id,title,assigned_by,assigned_to,description,document,link,date_given,deadline, team) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9, $10)",
+      [
+        id,
+        title,
+        userID,
+        itemID,
+        description,
+        document,
+        links,
+        date,
+        deadline,
+        team,
+      ]
+    );
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/getProject", async (req, res) => {
+  const { userID } = req.body;
+
+  try {
+    const response = await pool.query(
+      "SELECT project_id,title,description,document,link,date_given,deadline,users.name,teams.team_name FROM projects INNER JOIN users ON projects.assigned_by = users.id INNER JOIN teams ON projects.team = teams.team_id WHERE assigned_to = $1 OR assigned_by = $1",
+      [userID]
+    );
+    console.log(response);
+    res.json(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/viewProject", async (req, res) => {
+  const { projectID } = req.body;
+
+  try {
+    const response = await pool.query(
+      "SELECT * FROM projects WHERE project_id = $1",
+      [projectID]
+    );
+    res.json(response);
   } catch (error) {
     console.log(error);
   }
