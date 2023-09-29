@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
+import axios from "axios";
 
 const Project = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
+  const [feedBack, setFeedback] = useState([]);
 
   const title = cookies.project_title;
-  const id = cookies.projectID;
+  const projectID = cookies.projectID;
   const assigned_by = cookies.assignedBy;
   const team = cookies.team;
   const desc = cookies.desc;
@@ -13,17 +15,60 @@ const Project = () => {
   const document = cookies.document;
   const date_given = cookies.date_given;
   const deadline = cookies.deadline;
+  const givenby = cookies.givenby;
+  const givento = cookies.givento;
+  const userID = cookies.userID;
+  const username = cookies.Name;
+
+  const config = { headers: { "Content-type": "application/json" } };
+
+  const viewComment = async () => {
+    const response = await axios.post(
+      "http://localhost:5000/viewComment",
+      {
+        projectID,
+      },
+      config
+    );
+    setFeedback(response.data);
+  };
+
+  useEffect(() => {
+    viewComment();
+  });
 
   return (
     <div className="container">
-      This project was given in {team} by {assigned_by} on {date_given}.<br />
+      This project was given in {team} by{" "}
+      {userID == givenby ? "You" : assigned_by} on {date_given}.<br />
       About project:
       <br /> Title: {title} <br />
       {desc}
       <br />
       The following documents or link can be access :{document} {link}.<br />
-      Make sure to finish project and report to {assigned_by} on or before{" "}
-      {deadline}
+      {userID != givenby &&
+        `Make sure to finish project and report to ${assigned_by} on or before
+      ${deadline}`}{" "}
+      <br />
+      <br />
+      {userID != givenby && (
+        <div>
+          <h6>Feedback: </h6>
+          {feedBack.map((comment) => (
+            <p>{comment.comment}</p>
+          ))}
+        </div>
+      )}
+      <br />
+      {givenby == userID ? (
+        <a href="/view_report" className="btn">
+          View report
+        </a>
+      ) : (
+        <a href="/report" className="btn">
+          Give report
+        </a>
+      )}
     </div>
   );
 };

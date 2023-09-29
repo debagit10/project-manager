@@ -29,7 +29,7 @@ const CreateTeam = () => {
         config
       );
       const team = response.data;
-      console.log(team);
+      //console.log(team);
       if (team.error) {
         setError(team.error);
       }

@@ -15,6 +15,7 @@ const Home = () => {
 
   const userID = cookies.userID;
   const username = cookies.Name;
+  const token = cookies.Token;
 
   const config = { headers: { "Content-type": "application/json" } };
 
@@ -47,7 +48,7 @@ const Home = () => {
         },
         config
       );
-      console.log(response);
+      // console.log(response.data);
       setProjects(response.data);
     } catch (error) {
       console.log(error);
@@ -55,15 +56,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-    getTeams();
-    getProject();
+    if (token) {
+      getTeams();
+      getProject();
+    } else {
+      navigate("/");
+    }
   });
 
   return (
     <div className="container">
       <div className="row">
         <div className="col">
-          <h2>Your teams, {username}:</h2>
+          <h4>Your teams, {username}:</h4>
         </div>
 
         <div className="d-flex justify-content-evenly col">
@@ -101,38 +106,46 @@ const Home = () => {
         ))}
       </table>
 
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Title</th>
-            <th scope="col">Assigned by</th>
-            <th scope="col">Team</th>
-          </tr>
-        </thead>
-        {projects.map((project) => (
-          <tbody
-            className="container"
-            onClick={() => {
-              setCookie("projectID", project.project_id);
-              setCookie("project_title", project.title);
-              setCookie("assignedBy", project.name);
-              setCookie("team", project.team_name);
-              setCookie("desc", project.description);
-              setCookie("link", project.link);
-              setCookie("document", project.document);
-              setCookie("date_given", project.date_given);
-              setCookie("deadline", project.deadline);
-              navigate("/viewProject");
-            }}
-          >
-            <tr key={project.project_id}>
-              <td>{project.title}</td>
-              <td>{project.name}</td>
-              <td>{project.team_name}</td>
+      <h4>Pending projects:</h4>
+      <div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Assigned by</th>
+              <th scope="col">Team</th>
             </tr>
-          </tbody>
-        ))}
-      </table>
+          </thead>
+          {projects.map(
+            (project) =>
+              project.done != "true" && (
+                <tbody
+                  className="container"
+                  onClick={() => {
+                    navigate("/viewProject");
+                    setCookie("projectID", project.project_id);
+                    setCookie("project_title", project.title);
+                    setCookie("assignedBy", project.name);
+                    setCookie("team", project.team_name);
+                    setCookie("desc", project.description);
+                    setCookie("link", project.link);
+                    setCookie("document", project.document);
+                    setCookie("date_given", project.date_given);
+                    setCookie("deadline", project.deadline);
+                    setCookie("givenby", project.assigned_by);
+                    setCookie("givento", project.assigned_to);
+                  }}
+                >
+                  <tr key={project.project_id}>
+                    <td>{project.title}</td>
+                    <td>{project.name}</td>
+                    <td>{project.team_name}</td>
+                  </tr>
+                </tbody>
+              )
+          )}
+        </table>
+      </div>
     </div>
   );
 };

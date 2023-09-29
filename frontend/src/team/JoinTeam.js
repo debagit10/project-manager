@@ -69,7 +69,7 @@ const JoinTeam = () => {
                       Team's ID
                     </label>
                     <input
-                      type="email"
+                      type=""
                       class="form-control"
                       id="email"
                       required

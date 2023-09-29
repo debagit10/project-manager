@@ -97,7 +97,6 @@ app.post("/createTeam", async (req, res) => {
       );
 
       res.json({ id, name, about, userID });
-      console.log(create);
     }
   } catch (error) {
     console.log(error);
@@ -158,10 +157,10 @@ app.post("/viewTeam", async (req, res) => {
   const { teamID } = req.body;
   try {
     const response = await pool.query(
-      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id, users.name, users.id FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE team_members.team_id = $1",
+      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id, users.name, users.id, team_members.min_admin FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE team_members.team_id = $1",
       [teamID]
     );
-    console.log();
+
     res.json(response.rows);
   } catch (error) {
     console.log(error);
@@ -172,25 +171,11 @@ app.post("/addAdmin", async (req, res) => {
   const { itemID, teamID } = req.body;
   try {
     const response = await pool.query(
-      "INSERT INTO min_admin(min_admin_id, team_id) VALUES($1,$2)",
+      "UPDATE team_members SET min_admin = 'true' WHERE member_id = $1 AND team_id = $2",
       [itemID, teamID]
     );
     console.log(response);
     res.json(response);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-app.post("/getAdmin", async (req, res) => {
-  const { teamID } = req.body;
-  try {
-    const response = await pool.query(
-      "SELECT users.name FROM min_admin JOIN users ON min_admin.min_admin_id = users.id WHERE team_id = $1",
-      [teamID]
-    );
-    res.json(response.rows);
-    //console.log(response.rows);
   } catch (error) {
     console.log(error);
   }
@@ -210,7 +195,7 @@ app.post("/addProject", async (req, res) => {
 
   const id = uuidv4();
 
-  const date = Date.UTC();
+  const date = Date.now();
 
   try {
     const response = await pool.query(
@@ -239,10 +224,10 @@ app.post("/getProject", async (req, res) => {
 
   try {
     const response = await pool.query(
-      "SELECT project_id,title,description,document,link,date_given,deadline,users.name,teams.team_name FROM projects INNER JOIN users ON projects.assigned_by = users.id INNER JOIN teams ON projects.team = teams.team_id WHERE assigned_to = $1 OR assigned_by = $1",
+      "SELECT project_id,title,description,document,link,date_given,deadline,assigned_by,done,assigned_to,users.name,teams.team_name FROM projects INNER JOIN users ON projects.assigned_by = users.id INNER JOIN teams ON projects.team = teams.team_id WHERE assigned_to = $1 OR assigned_by = $1",
       [userID]
     );
-    console.log(response);
+    //console.log(response);
     res.json(response.rows);
   } catch (error) {
     console.log(error);
@@ -254,7 +239,192 @@ app.post("/viewProject", async (req, res) => {
 
   try {
     const response = await pool.query(
-      "SELECT * FROM projects WHERE project_id = $1",
+      "SELECT project_id,title,description,document,link,date_given,deadline,users.name,teams.team_name FROM projects INNER JOIN users ON projects.assigned_by = users.id INNER JOIN teams ON projects.team = teams.team_id WHERE projects.project_id = $1",
+      [projectID]
+    );
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/removeMember", async (req, res) => {
+  const { itemID, teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "DELETE FROM team_members WHERE member_id = $1 AND team_id = $2",
+      [itemID, teamID]
+    );
+
+    const admin = await pool.query(
+      "SELECT * FROM min_admin WHERE team_id = $1 AND min_admin_id = $2",
+      [itemID, teamID]
+    );
+
+    if (admin) {
+      const remove = await pool.query(
+        "DELETE FROM min_admin WHERE min_admin_id = $1 AND team_id = $2",
+        [itemID, teamID]
+      );
+    }
+
+    const project = await pool.query(
+      "SELECT * FROM projects WHERE assigned_to = $1 AND team = $2",
+      [itemID, teamID]
+    );
+
+    if (project) {
+      const clear = await pool.query(
+        "DELETE FROM projects WHERE assigned_to = $1 AND team = $2",
+        [itemID, teamID]
+      );
+    }
+
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/leaveTeam", async (req, res) => {
+  const { userID, teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "DELETE FROM team_members WHERE member_id = $1 AND team_id = $2",
+      [userID, teamID]
+    );
+
+    const project = await pool.query(
+      "SELECT * FROM projects WHERE assigned_to = $1 AND team = $2",
+      [userID, teamID]
+    );
+
+    if (project) {
+      const clear = await pool.query(
+        "DELETE FROM projects WHERE assigned_to = $1 AND team = $2",
+        [userID, teamID]
+      );
+    }
+
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/deleteTeam", async (req, res) => {
+  const { teamID } = req.body;
+  try {
+    const response = await pool.query("DELETE FROM teams WHERE team_id = $1", [
+      teamID,
+    ]);
+    res.json(response);
+    console.log(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/teamProject", async (req, res) => {
+  const { teamID } = req.body;
+  try {
+    const response = await pool.query(
+      "SELECT project_id,title,date_given,deadline,done,users.name,teams.team_name FROM projects INNER JOIN users ON projects.assigned_to = users.id INNER JOIN teams ON projects.team = teams.team_id WHERE team = $1",
+      [teamID]
+    );
+    res.json(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/projectReport", async (req, res) => {
+  const { title, project_id, summary, deadline, assigned_by, userID, report } =
+    req.body;
+
+  const date = Date.now();
+  const id = uuidv4();
+  try {
+    const check = await pool.query(
+      "SELECT * FROM project_report WHERE project_id = $1",
+      [project_id]
+    );
+    console.log(check.rows.length);
+    if (!check.rows.length) {
+      const response = await pool.query(
+        "INSERT INTO project_report(report_id,project_id,title,summary,assigned_to,assigned_by,deadline,date_submitted,report) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",
+        [
+          id,
+          project_id,
+          title,
+          summary,
+          userID,
+          assigned_by,
+          deadline,
+          date,
+          report,
+        ]
+      );
+      res.json(response);
+      //console.log(response);
+    } else {
+      const update = await pool.query(
+        "UPDATE project_report SET summary = $1, report = $2 WHERE project_id = $3",
+        [summary, report, project_id]
+      );
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/getReport", async (req, res) => {
+  const { projectID } = req.body;
+
+  try {
+    const response = await pool.query(
+      "SELECT * FROM project_report WHERE project_id = $1",
+      [projectID]
+    );
+    res.json(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/comment", async (req, res) => {
+  const { comment, projectID } = req.body;
+  const id = uuidv4();
+  try {
+    const response = await pool.query(
+      "INSERT INTO report_comment(id,comment,project_id) VALUES($1,$2,$3)",
+      [id, comment, projectID]
+    );
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/viewComment", async (req, res) => {
+  const { projectID } = req.body;
+  try {
+    const response = await pool.query(
+      "SELECT * FROM report_comment WHERE project_id = $1",
+      [projectID]
+    );
+    res.json(response.rows);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post("/validate", async (req, res) => {
+  const { projectID } = req.body;
+
+  try {
+    const response = await pool.query(
+      "UPDATE projects SET done = 'true' WHERE project_id = $1",
       [projectID]
     );
     res.json(response);
