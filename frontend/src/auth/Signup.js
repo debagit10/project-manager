@@ -16,9 +16,11 @@ const Signup = () => {
     e.preventDefault();
     if (!name || !password || !confirmPassword || !email) {
       setError("Please fill all fields");
+      return;
     } else {
       if (password != confirmPassword) {
         setError("Passwords do not match");
+        return;
       } else {
         console.log(email, name, password);
       }
@@ -37,8 +39,9 @@ const Signup = () => {
       );
       const user = response.data;
       console.log(response.data);
-      if (response.data.error) {
-        setError(response.data.error);
+      if (user.error) {
+        setError(user.error);
+        return;
       } else {
         setError("Sign up successful");
         setCookie("Email", user.email);
@@ -53,65 +56,42 @@ const Signup = () => {
   };
 
   return (
-    <div class="container mt-5">
-      <div class="">
-        <div class="col-md-6">
-          <h2>Sign Up</h2>
-          <form>
-            <div class="mb-3">
-              <label for="signupEmail" class="form-label">
-                Email address
-              </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div class="mb-3">
-              <label for="signupEmail" class="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                required
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div class="mb-3">
-              <label for="signupPassword" class="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div class="mb-3">
-              <label for="signupPassword" class="form-label">
-                Confirm password
-              </label>
-              <input
-                type="password"
-                class="form-control"
-                id="confirm_password"
-                required
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <button class="btn btn-primary" onClick={submit}>
-              Sign Up
-            </button>
-            <div className="mb-3">{error}</div>
-          </form>
+    <div className="mx-5 flex  justify-center">
+      <div className=" w-96 border border-slate-100 rounded-lg mt-10">
+        <h2 className="flex justify-center ">Sign up:</h2>
+        <div className="py-3 px-3 flex flex-col">
+          <label>Email:</label>
+          <input
+            placeholder="example@email.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
+        <div className="py-3 px-3 flex flex-col">
+          <label>Username:</label>
+          <input placeholder="" onChange={(e) => setName(e.target.value)} />
+        </div>
+        <div className="py-3 px-3 flex flex-col">
+          <label>Password:</label>
+          <input
+            type="password"
+            placeholder="Your password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="py-3 px-3 flex flex-col">
+          <label>Confirm password:</label>
+          <input
+            type="password"
+            placeholder="Confirm the password"
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </div>
+        <div className="py-3 px-3 flex flex-col">
+          <button className="btn btn-primary" onClick={submit}>
+            Submit
+          </button>
+        </div>
+        <div className="pl-5 py-3 flex flex-col">{error}</div>
       </div>
     </div>
   );

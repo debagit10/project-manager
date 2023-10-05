@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Addproject from "./modal/Addproject";
+import Sidebar from "./modal/Sidebar";
 import Authentication from "./pages/Authentication";
 import History from "./pages/History";
 import Home from "./pages/Home";
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/report" Component={Report} />
         <Route path="/view_report" Component={ViewReport} />
         <Route path="/history" Component={History} />
+        <Route path="/sidebar" Component={Sidebar} />
       </Routes>
     </div>
   );

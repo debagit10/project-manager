@@ -42,42 +42,30 @@ const Login = () => {
   };
 
   return (
-    <div class="container mt-5">
-      <div class="">
-        <div class="col-md-6">
-          <h2>Log in</h2>
-          <form>
-            <div class="mb-3">
-              <label for="email" class="form-label">
-                Email address
-              </label>
-              <input
-                type="email"
-                class="form-control"
-                id="email"
-                required
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">
-                Password
-              </label>
-              <input
-                type="password"
-                class="form-control"
-                id="password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-
-            <button class="btn btn-primary" onClick={submit}>
-              Login
-            </button>
-            <div className="mb-3">{error}</div>
-          </form>
+    <div className="mx-5 flex justify-center">
+      <div className=" w-96 border rounded-lg mt-10">
+        <h2 className="flex justify-center">Login:</h2>
+        <div className="p-5 flex flex-col">
+          <label>Email:</label>
+          <input
+            placeholder="example@email.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </div>
+        <div className="p-5 flex flex-col">
+          <label>Password:</label>
+          <input
+            type="password"
+            placeholder="Your password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="p-5 flex flex-col">
+          <button className="btn btn-primary" onClick={submit}>
+            Submit
+          </button>
+        </div>
+        <div className="pl-5 py-3 flex flex-col">{error}</div>
       </div>
     </div>
   );
