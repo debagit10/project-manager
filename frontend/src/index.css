@@ -69,4 +69,8 @@ code {
   .Select ul li {
     @apply hover:bg-slate-100;
   }
+
+  .container {
+    @apply p-5;
+  }
 }

@@ -10,7 +10,7 @@ const Authentication = () => {
   return (
     <div className="bg-slate-300 h-screen ">
       <div className="container pt-3 flex flex-col justify-center pb-5">
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <div className="flex justify-center mx-5">
             <div className="flex flex-col ">
               <img src={Logo2} alt="Nithub logo" className="w-56" />
@@ -20,13 +20,13 @@ const Authentication = () => {
           {isLogin ? <Login /> : <Signup />}
           <div className="m-3 flex justify-center">
             <button
-              className="btn border text-black"
+              className="btn border text-black m-5"
               onClick={() => setIsLogin(true)}
             >
               Login
             </button>
             <button
-              className="btn border text-black"
+              className="btn border text-black m-5"
               onClick={() => setIsLogin(false)}
             >
               Signup

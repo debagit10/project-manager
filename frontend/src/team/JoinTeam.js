@@ -6,6 +6,7 @@ const JoinTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [teamID, setTeamID] = useState();
   const [error, setError] = useState();
+  const [isOpen, setIsOpen] = useState(false);
   const userID = cookies.userID;
 
   const submit = async () => {
@@ -32,63 +33,16 @@ const JoinTeam = () => {
 
   return (
     <div>
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#joinTeam"
-      >
+      <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
         Join team
       </button>
-
-      <div
-        class="modal fade"
-        id="joinTeam"
-        tabindex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">
-                Join team
-              </h1>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div class="modal-body">
-              <div class="col-md-6">
-                <form>
-                  <div class="mb-3">
-                    <label for="email" class="form-label">
-                      Team's ID
-                    </label>
-                    <input
-                      type=""
-                      class="form-control"
-                      id="email"
-                      required
-                      onChange={(e) => setTeamID(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="mb-3">{error}</div>
-                </form>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary" onClick={submit}>
-                Join
-              </button>
-            </div>
-          </div>
+      {isOpen && (
+        <div className="block">
+          <label>Team's ID</label>
+          <input type="text" />
+          <button className="btn btn-primary">Join</button>
         </div>
-      </div>
+      )}
     </div>
   );
 };
