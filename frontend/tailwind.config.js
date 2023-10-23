@@ -8,6 +8,15 @@ module.exports = {
         sm: "15px",
         base: "18px",
       },
+
+      screens: {
+        sm: { max: "640px" },
+        md: { min: "415px", max: "800px" },
+      },
+
+      backgroundImage: {
+        Bgg: "url(/src/images/background.jpg)",
+      },
     },
   },
   plugins: [],

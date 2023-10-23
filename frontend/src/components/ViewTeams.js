@@ -4,9 +4,10 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 //import Project from "./Project";
-import DataTable from "react-data-table-component";
+import Container from "./Container.tsx";
+import { Typography } from "@mui/material";
 
-const ViewTeams = () => {
+const ViewTeams = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [error, setError] = useState();
   const [teams, setTeams] = useState([]);
@@ -39,49 +40,44 @@ const ViewTeams = () => {
     }
   };
 
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "55px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-  const columns = [
-    {
-      name: "Name",
-      selector: (row) => row.team_name,
-    },
-    {
-      name: "Owner",
-      selector: (row) => (row.admin_id == userID ? "You" : row.admin),
-    },
-    {
-      name: "About",
-      selector: (row) => row.about,
-    },
-  ];
-
   useEffect(() => {
     getTeams();
   });
 
   return (
-    <div>
-      <DataTable columns={columns} data={teams} customStyles={customStyles} />
-    </div>
+    <Container>
+      <div className="container">
+        <Typography>Teams you belong to, {username}</Typography>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Created by</th>
+              <th scope="col">About</th>
+            </tr>
+          </thead>
+          <tbody>
+            {teams.map((team) => (
+              <tr
+                key={team.team_id}
+                onClick={() => {
+                  navigate("/view_team");
+                  setCookie("teamID", team.team_id);
+                  setCookie("team_name", team.team_name);
+                  setCookie("about", team.about);
+                  setCookie("admin", team.admin);
+                  setCookie("adminID", team.admin_id);
+                }}
+              >
+                <td>{team.team_name}</td>
+                <td>{team.admin_id == userID ? "You" : team.admin}</td>
+                <td>{team.about}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </Container>
   );
 };
 

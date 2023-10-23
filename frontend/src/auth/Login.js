@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import LandingPage from "../pages/LandingPage.tsx";
 
 const Login = () => {
   const [email, setEmail] = useState();

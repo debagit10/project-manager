@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import Container from "../components/Container.tsx";
 
-const Project = () => {
+const Project = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [feedBack, setFeedback] = useState([]);
 
@@ -38,38 +39,40 @@ const Project = () => {
   });
 
   return (
-    <div className="container">
-      This project was given in {team} by{" "}
-      {userID == givenby ? "You" : assigned_by} on {date_given}.<br />
-      About project:
-      <br /> Title: {title} <br />
-      {desc}
-      <br />
-      The following documents or link can be access :{document} {link}.<br />
-      {userID != givenby &&
-        `Make sure to finish project and report to ${assigned_by} on or before
+    <Container>
+      <div className="container">
+        This project was given in {team} by{" "}
+        {userID == givenby ? "You" : assigned_by} on {date_given}.<br />
+        About project:
+        <br /> Title: {title} <br />
+        {desc}
+        <br />
+        The following documents or link can be access :{document} {link}.<br />
+        {userID != givenby &&
+          `Make sure to finish project and report to ${assigned_by} on or before
       ${deadline}`}{" "}
-      <br />
-      <br />
-      {userID != givenby && (
-        <div>
-          <h6>Feedback: </h6>
-          {feedBack.map((comment) => (
-            <p>{comment.comment}</p>
-          ))}
-        </div>
-      )}
-      <br />
-      {givenby == userID ? (
-        <a href="/view_report" className="btn">
-          View report
-        </a>
-      ) : (
-        <a href="/report" className="btn">
-          Give report
-        </a>
-      )}
-    </div>
+        <br />
+        <br />
+        {userID != givenby && (
+          <div>
+            <h6>Feedback: </h6>
+            {feedBack.map((comment) => (
+              <p>{comment.comment}</p>
+            ))}
+          </div>
+        )}
+        <br />
+        {givenby == userID ? (
+          <a href="/view_report" className="btn">
+            View report
+          </a>
+        ) : (
+          <a href="/report" className="btn">
+            Give report
+          </a>
+        )}
+      </div>
+    </Container>
   );
 };
 

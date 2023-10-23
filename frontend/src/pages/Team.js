@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Options from "../modal/Options";
+import Container from "../components/Container.tsx";
 
-const Team = () => {
+const Team = ({children}) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [detail, setDetail] = useState([]);
   const [viewAdmin, setViewAdmin] = useState([]);
@@ -82,64 +83,66 @@ const Team = () => {
   });
 
   return (
-    <div className="container">
-      <h3>Team name: {name}</h3>
-      <p>About: {about}</p>
-      <h6>Created by: {userID == adminID ? "You" : admin}</h6>
-      <p>
-        Members:
-        {detail.map((item) => (
-          <p onClick={() => console.log(item.min_admin)}>
-            {adminID == userID ||
-            (item.id != userID && item.min_admin == true) ? (
-              <Options item={item} />
-            ) : item.id == adminID || item.min_admin == true ? (
-              `${item.name} (admin)`
-            ) : (
-              `${item.name}`
+    <Container>
+      <div className="container">
+        <h3>Team name: {name}</h3>
+        <p>About: {about}</p>
+        <h6>Created by: {userID == adminID ? "You" : admin}</h6>
+        <p>
+          Members:
+          {detail.map((item) => (
+            <p onClick={() => console.log(item.min_admin)}>
+              {adminID == userID ||
+              (item.id != userID && item.min_admin == true) ? (
+                <Options item={item} />
+              ) : item.id == adminID || item.min_admin == true ? (
+                `${item.name} (admin)`
+              ) : (
+                `${item.name}`
+              )}
+            </p>
+          ))}
+        </p>
+
+        <div>
+          <h6>Outstanding Projects:</h6>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Assigned to</th>
+              </tr>
+            </thead>
+            {projects.map(
+              (project) =>
+                project.done != "true" && (
+                  <tbody>
+                    <tr>
+                      <td>{project.title}</td>
+                      <td>{project.name}</td>
+                    </tr>
+                  </tbody>
+                )
             )}
-          </p>
-        ))}
-      </p>
+          </table>
+        </div>
 
-      <div>
-        <h6>Outstanding Projects:</h6>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Assigned to</th>
-            </tr>
-          </thead>
-          {projects.map(
-            (project) =>
-              project.done != "true" && (
-                <tbody>
-                  <tr>
-                    <td>{project.title}</td>
-                    <td>{project.name}</td>
-                  </tr>
-                </tbody>
-              )
-          )}
-        </table>
-      </div>
-
-      {adminID == userID && (
-        <p>Use this ID: {teamID} to give user accesss to join this team</p>
-      )}
-      <div>
-        {adminID == userID ? (
-          <button className="btn" onClick={deleteTeam}>
-            Delete team
-          </button>
-        ) : (
-          <button className="btn" onClick={leaveTeam}>
-            Leave team
-          </button>
+        {adminID == userID && (
+          <p>Use this ID: {teamID} to give user accesss to join this team</p>
         )}
+        <div>
+          {adminID == userID ? (
+            <button className="btn" onClick={deleteTeam}>
+              Delete team
+            </button>
+          ) : (
+            <button className="btn" onClick={leaveTeam}>
+              Leave team
+            </button>
+          )}
+        </div>
       </div>
-    </div>
+    </Container>
   );
 };
 

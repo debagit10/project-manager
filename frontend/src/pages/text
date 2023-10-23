@@ -1,15 +1,6 @@
-setCookie("teamID", team.team_id);
-setCookie("team_name", team.team_name);
-setCookie("about", team.about);
-setCookie("admin", team.admin);
-setCookie("adminID", team.admin_id);
-navigate("/team");
 
-<tr key={team.team_id} team={team}>
-  <td>{team.team_name}</td>
-  <td>{team.admin_id == userID ? "You" : team.admin}</td>
-  <td>{team.about}</td>
-</tr>;
+
+
 
 navigate("/viewProject");
 setCookie("projectID", project.project_id);
@@ -29,3 +20,11 @@ setCookie("givento", project.assigned_to);
   <td>{project.name}</td>
   <td>{project.team_name}</td>
 </tr>;
+
+bg-slate-300
+
+
+
+
+
+

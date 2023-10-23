@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import ViewTeams from "../components/ViewTeams";
-import DataTable from "react-data-table-component";
+import { Typography } from "@mui/material";
+import Container from "./Container.tsx";
 
-const ViewProjects = () => {
+const ViewProjects = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [error, setError] = useState();
   const [projects, setProjects] = useState([]);
@@ -39,51 +39,48 @@ const ViewProjects = () => {
     if (token) {
       getProject();
     }
-  });
-
-  const customStyles = {
-    rows: {
-      style: {
-        minHeight: "55px", // override the row height
-      },
-    },
-    headCells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for head cells
-        paddingRight: "8px",
-      },
-    },
-    cells: {
-      style: {
-        paddingLeft: "8px", // override the cell padding for data cells
-        paddingRight: "8px",
-      },
-    },
-  };
-
-  const columns = [
-    {
-      name: "Title",
-      selector: (row) => row.title,
-    },
-    {
-      name: "By",
-      selector: (row) => (row.assigned_by == userID ? "You" : row.name),
-    },
-    {
-      name: "Team",
-      selector: (row) => row.team_name,
-    },
-  ];
+  }, []);
 
   return (
-    <div className="hover:bg-slate-400">
-      <DataTable
-        columns={columns}
-        data={projects}
-        customStyles={customStyles}
-      />
-    </div>
+    <Container>
+      <div className="container">
+        <Typography>Your projects, {username}</Typography>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Assgined by</th>
+              <th scope="col">Team</th>
+            </tr>
+          </thead>
+          {projects.map((project) => (
+            <tbody>
+              <tr
+                key={project.project_id}
+                onClick={() => {
+                  navigate("/view_project");
+                  setCookie("projectID", project.project_id);
+                  setCookie("project_title", project.title);
+                  setCookie("assignedBy", project.name);
+                  setCookie("team", project.team_name);
+                  setCookie("desc", project.description);
+                  setCookie("link", project.link);
+                  setCookie("document", project.document);
+                  setCookie("date_given", project.date_given);
+                  setCookie("deadline", project.deadline);
+                  setCookie("givenby", project.assigned_by);
+                  setCookie("givento", project.assigned_to);
+                }}
+              >
+                <td>{project.title}</td>
+                <td>{project.name}</td>
+                <td>{project.team_name}</td>
+              </tr>
+            </tbody>
+          ))}
+        </table>
+      </div>
+    </Container>
   );
 };
 

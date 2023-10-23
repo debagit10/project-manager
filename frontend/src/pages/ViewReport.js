@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Container from "../components/Container.tsx";
 
 const ViewReport = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -23,7 +24,7 @@ const ViewReport = () => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
-  const viewReport = async () => {
+  const viewReport = async ({ children }) => {
     try {
       const response = await axios.post(
         "http://localhost:5000/getReport",
@@ -72,29 +73,31 @@ const ViewReport = () => {
   });
 
   return (
-    <div className="container">
-      {report.map((item) => (
-        <div>
-          <h1>{item.title}</h1>
-          <p>Summary: {item.summary}</p>
-          <p>Submitted on: {item.submitted_on}</p>
-          <p>Report: {item.report}</p>
-          <div class="mb-3">
-            <textarea
-              class="form-control"
-              placeholder="Validate or ask to re-do project with specific instructions"
-              onChange={(e) => setComment(e.target.value)}
-            ></textarea>
-            <button className="btn" onClick={submit}>
-              Send comment
-            </button>
-            <button className="btn" onClick={validate}>
-              Validate report
-            </button>
+    <Container>
+      <div className="container">
+        {report.map((item) => (
+          <div>
+            <h1>{item.title}</h1>
+            <p>Summary: {item.summary}</p>
+            <p>Submitted on: {item.submitted_on}</p>
+            <p>Report: {item.report}</p>
+            <div class="mb-3">
+              <textarea
+                class="form-control"
+                placeholder="Validate or ask to re-do project with specific instructions"
+                onChange={(e) => setComment(e.target.value)}
+              ></textarea>
+              <button className="btn" onClick={submit}>
+                Send comment
+              </button>
+              <button className="btn" onClick={validate}>
+                Validate report
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </Container>
   );
 };
 
