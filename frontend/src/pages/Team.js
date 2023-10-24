@@ -4,7 +4,7 @@ import { useCookies } from "react-cookie";
 import Options from "../modal/Options";
 import Container from "../components/Container.tsx";
 
-const Team = ({children}) => {
+const Team = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [detail, setDetail] = useState([]);
   const [viewAdmin, setViewAdmin] = useState([]);

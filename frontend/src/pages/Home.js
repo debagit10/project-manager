@@ -54,9 +54,8 @@ const Home = ({ children }) => {
                 </Typography>
 
                 <br />
-                <Button variant="outlined" className="mb-2">
-                  Create team
-                </Button>
+
+                <CreateTeam />
               </Paper>
             </div>
             <div className="">

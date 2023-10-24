@@ -1,13 +1,24 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const CreateTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [name, setName] = useState();
   const [about, setAbout] = useState();
   const [error, setError] = useState();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const userID = cookies.userID;
   const username = cookies.Name;
@@ -40,24 +51,42 @@ const CreateTeam = () => {
   };
 
   return (
-    <div>
-      <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
-        CreateTeam
-      </button>
-      {isOpen && (
-        <div className="block z-0">
-          <label>Team's Name:</label>
-          <input type="text" onChange={(e) => setName(e.target.value)} />
-          <label>About:</label>
-          <input
-            type="text"
-            onChange={(e) => setAbout(e.target.value)}
-            placeholder="Short description about the team"
-          />
-          <button className="btn btn-primary">Create</button>
-        </div>
-      )}
-    </div>
+    <>
+      <Button onClick={() => setOpen(true)}>Create Team</Button>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <DialogTitle id="dialog-title">Create Team</DialogTitle>
+        <DialogContent>
+          <div className="container">
+            <form>
+              <TextField
+                label="Name"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <TextField
+                label="About"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={(e) => setAbout(e.target.value)}
+              />
+            </form>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={submit}>Create</Button>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+        </DialogActions>
+        {error}
+      </Dialog>
+    </>
   );
 };
 
