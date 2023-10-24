@@ -4,7 +4,9 @@ import Container from "../components/Container.tsx";
 const Dashboard = ({ children }) => {
   return (
     <Container>
-      <div className="container">Dashboard</div>
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+        Dashboard
+      </div>
     </Container>
   );
 };

@@ -84,7 +84,7 @@ const Team = ({children}) => {
 
   return (
     <Container>
-      <div className="container">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         <h3>Team name: {name}</h3>
         <p>About: {about}</p>
         <h6>Created by: {userID == adminID ? "You" : admin}</h6>

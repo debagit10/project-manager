@@ -43,7 +43,7 @@ const ViewProjects = ({ children }) => {
 
   return (
     <Container>
-      <div className="container">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         <Typography>Your projects, {username}</Typography>
         <table class="table">
           <thead>

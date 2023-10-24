@@ -38,44 +38,64 @@ import image8 from "../images/image8.jpg";
 import image9 from "../images/image9.jpg";
 import create from "../images/create.jpg";
 import join from "../images/join.jpg";
+import join2 from "../images/join2.jpg";
 import project from "../images/project.jpg";
 
 const Home = ({ children }) => {
   return (
     <Container>
-      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-screen">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         <div className="container">
-          <h1>Good afternoon, user</h1>
+          <h1>Good morning, user</h1>
           <div
             style={{ marginTop: "50px" }}
             className="grid grid-cols-3 gap-3 sm:grid-cols-1 sm:gap-5 "
           >
             <div className="">
               <Paper elevation={4}>
-                <img src={create} className="rounded-md" />
-                <div style={{ fontWeight: "bolder" }}>Create a team:</div> you
-                have a team and want to manage their projects, you're just few
-                steps from setting up after clicking this:
+                <img src={create} className="rounded-lg" />
+
+                <Typography variant="body1" className="p-2">
+                  You have a team and want to manage their projects, you're just
+                  few steps from setting up after clicking this:
+                </Typography>
+
                 <br />
-                <Button>Create team</Button>
+                <Button variant="outlined" className="mb-2">
+                  Create team
+                </Button>
               </Paper>
             </div>
             <div className="">
               <Paper elevation={4}>
-                <img src={join} />
-                <div style={{ fontWeight: "bolder" }}>Join a team:</div>
-                Joining a team has never been easier. By just inputting the ID
-                given to you, you're already a member of that team <br />
-                <Button>Join team</Button>
+                <img
+                  src={join2}
+                  style={{ width: "100%", height: "325px" }}
+                  className="rounded-lg"
+                />
+                <Typography variant="body1" className="p-2">
+                  Joining a team has never been easier. By just inputting the ID
+                  given to you, you're already a member of that team
+                </Typography>{" "}
+                <br />
+                <Button variant="outlined" className="mb-2">
+                  Join team
+                </Button>
               </Paper>
             </div>
-            <div className="">
+            <div>
               <Paper elevation={4}>
-                <img src={project} />
-                <div style={{ fontWeight: "bolder" }}>Analytics:</div>
-                Want to access your weekly performances, here gives you detailed
-                analysis of what you need to know. <br />
-                <Button>View</Button>
+                <img src={project} className="rounded-lg" />
+
+                <Typography variant="body1" className="p-2">
+                  Work on projects you have been assigned to or review projects
+                  you assigned. Finish your projects before the given deadline
+                  to keep your performance percentage up.
+                </Typography>
+
+                <Button variant="outlined" className="mb-2">
+                  View
+                </Button>
               </Paper>
             </div>
           </div>

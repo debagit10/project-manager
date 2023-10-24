@@ -13,6 +13,8 @@ import LandingPage from "./pages/LandingPage.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import ViewProjects from "./components/ViewProjects";
 import ViewTeams from "./components/ViewTeams";
+import Login from "./auth/Login";
+import Signup from "./auth/Signup";
 
 const App = () => {
   return (
@@ -30,6 +32,8 @@ const App = () => {
         <Route path="/dashboard" Component={Dashboard} />
         <Route path="/projects" Component={ViewProjects} />
         <Route path="/teams" Component={ViewTeams} />
+        <Route path="/signup" Component={Signup} />
+        <Route path="/login" Component={Login} />
       </Routes>
     </div>
   );

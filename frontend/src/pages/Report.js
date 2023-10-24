@@ -43,7 +43,7 @@ const Report = ({ children }) => {
 
   return (
     <Container>
-      <div className="container">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         <h5>Give your report for this project:</h5>
         <div class="mb-3">
           <label class="form-label">Project title</label>

@@ -3,6 +3,8 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import LandingPage from "../pages/LandingPage.tsx";
+import Authentication from "../pages/Authentication";
+import { Box, Button, TextField, Typography } from "@mui/material";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -43,32 +45,42 @@ const Login = () => {
   };
 
   return (
-    <div className="mx-5 flex justify-center">
-      <div className=" w-96 border rounded-lg mt-10">
-        <h2 className="flex justify-center">Login:</h2>
-        <div className="p-5 flex flex-col">
-          <label>Email:</label>
-          <input
-            placeholder="example@email.com"
-            onChange={(e) => setEmail(e.target.value)}
+    <Authentication>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <Typography variant="h4" gutterBottom>
+          Login
+        </Typography>
+        <form>
+          <TextField
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div className="p-5 flex flex-col">
-          <label>Password:</label>
-          <input
+          <TextField
+            label="Password"
             type="password"
-            placeholder="Your password"
-            onChange={(e) => setPassword(e.target.value)}
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div className="p-5 flex flex-col">
-          <button className="btn btn-primary" onClick={submit}>
-            Submit
-          </button>
-        </div>
-        <div className="pl-5 py-3 flex flex-col">{error}</div>
-      </div>
-    </div>
+          <Button variant="contained" color="primary">
+            Login
+          </Button>
+        </form>
+        <Typography>
+          Don't have an account?{" "}
+          <a onClick={() => navigate("/signup")}>Sign up</a>
+        </Typography>
+      </Box>
+    </Authentication>
   );
 };
 

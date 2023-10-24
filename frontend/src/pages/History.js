@@ -34,7 +34,7 @@ const History = ({ children }) => {
   return (
     <Container>
       {token ? (
-        <div className="container">
+        <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
           This is a list of all the projects you have worked on:
           <table class="table">
             <thead>

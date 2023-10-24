@@ -40,7 +40,7 @@ const Project = ({ children }) => {
 
   return (
     <Container>
-      <div className="container">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         This project was given in {team} by{" "}
         {userID == givenby ? "You" : assigned_by} on {date_given}.<br />
         About project:

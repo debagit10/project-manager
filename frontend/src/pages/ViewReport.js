@@ -74,7 +74,7 @@ const ViewReport = () => {
 
   return (
     <Container>
-      <div className="container">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         {report.map((item) => (
           <div>
             <h1>{item.title}</h1>

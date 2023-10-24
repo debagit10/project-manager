@@ -46,36 +46,38 @@ const ViewTeams = ({ children }) => {
 
   return (
     <Container>
-      <div className="container">
-        <Typography>Teams you belong to, {username}</Typography>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Created by</th>
-              <th scope="col">About</th>
-            </tr>
-          </thead>
-          <tbody>
-            {teams.map((team) => (
-              <tr
-                key={team.team_id}
-                onClick={() => {
-                  navigate("/view_team");
-                  setCookie("teamID", team.team_id);
-                  setCookie("team_name", team.team_name);
-                  setCookie("about", team.about);
-                  setCookie("admin", team.admin);
-                  setCookie("adminID", team.admin_id);
-                }}
-              >
-                <td>{team.team_name}</td>
-                <td>{team.admin_id == userID ? "You" : team.admin}</td>
-                <td>{team.about}</td>
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+        <div className="container">
+          <Typography>Teams you belong to, {username}</Typography>
+          <table class="table container ">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Created by</th>
+                <th scope="col">About</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {teams.map((team) => (
+                <tr
+                  key={team.team_id}
+                  onClick={() => {
+                    navigate("/view_team");
+                    setCookie("teamID", team.team_id);
+                    setCookie("team_name", team.team_name);
+                    setCookie("about", team.about);
+                    setCookie("admin", team.admin);
+                    setCookie("adminID", team.admin_id);
+                  }}
+                >
+                  <td>{team.team_name}</td>
+                  <td>{team.admin_id == userID ? "You" : team.admin}</td>
+                  <td>{team.about}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </Container>
   );

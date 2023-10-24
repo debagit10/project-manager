@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { Box, Typography, TextField, Button } from "@mui/material";
+import Authentication from "../pages/Authentication";
 
 const Signup = () => {
   const [email, setEmail] = useState();
@@ -56,44 +58,55 @@ const Signup = () => {
   };
 
   return (
-    <div className="mx-5 flex  justify-center">
-      <div className=" w-96 border border-slate-100 rounded-lg mt-10">
-        <h2 className="flex justify-center ">Sign up:</h2>
-        <div className="py-3 px-3 flex flex-col">
-          <label>Email:</label>
-          <input
-            placeholder="example@email.com"
-            onChange={(e) => setEmail(e.target.value)}
+    <Authentication>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <Typography variant="h4" gutterBottom>
+          Sign Up
+        </Typography>
+        <form>
+          <TextField
+            label="Username"
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div className="py-3 px-3 flex flex-col">
-          <label>Username:</label>
-          <input placeholder="" onChange={(e) => setName(e.target.value)} />
-        </div>
-        <div className="py-3 px-3 flex flex-col">
-          <label>Password:</label>
-          <input
+          <TextField
+            label="Email"
+            type="email"
+            variant="outlined"
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Password"
             type="password"
-            placeholder="Your password"
-            onChange={(e) => setPassword(e.target.value)}
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div className="py-3 px-3 flex flex-col">
-          <label>Confirm password:</label>
-          <input
+          <TextField
+            label="Confirm password"
             type="password"
-            placeholder="Confirm the password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            variant="outlined"
+            fullWidth
+            margin="normal"
           />
-        </div>
-        <div className="py-3 px-3 flex flex-col">
-          <button className="btn btn-primary" onClick={submit}>
-            Submit
-          </button>
-        </div>
-        <div className="pl-5 py-3 flex flex-col">{error}</div>
-      </div>
-    </div>
+          <Button variant="contained" color="primary">
+            Sign Up
+          </Button>
+        </form>
+        <Typography>
+          Already have an account?
+          <a onClick={() => navigate("/login")}>Login</a>
+        </Typography>
+      </Box>
+    </Authentication>
   );
 };
 
