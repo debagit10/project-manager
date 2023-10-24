@@ -10,6 +10,7 @@ import Project from "./Project";
 import Report from "./Report";
 import ViewReport from "./ViewReport";
 import ViewProjects from "../components/ViewProjects";
+import { useCookies } from "react-cookie";
 
 import {
   Typography,
@@ -25,31 +26,23 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MailIcon from "@mui/icons-material/Mail";
 import Navbar from "../components/Navbar.tsx";
 
-import { Cookies } from "react-cookie";
 import Container from "../components/Container.tsx";
-import image1 from "../images/image1.jpg";
-import image2 from "../images/image2.jpg";
-import image3 from "../images/image3.jpg";
-import image4 from "../images/image4.jpg";
-import image5 from "../images/image5.jpg";
-import image6 from "../images/image6.jpg";
-import image7 from "../images/image7.jpg";
-import image8 from "../images/image8.jpg";
-import image9 from "../images/image9.jpg";
 import create from "../images/create.jpg";
 import join from "../images/join.jpg";
 import join2 from "../images/join2.jpg";
 import project from "../images/project.jpg";
 
 const Home = ({ children }) => {
+  const [cookies, setCookie, removeCookies] = useCookies();
+  const username = cookies.Name;
   return (
     <Container>
       <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
         <div className="container">
-          <h1>Good morning, user</h1>
+          <h1>Welcome, {username}</h1>
           <div
             style={{ marginTop: "50px" }}
-            className="grid grid-cols-3 gap-3 sm:grid-cols-1 sm:gap-5 "
+            className="grid grid-cols-3 gap-3 sm:grid-cols-1 sm:gap-5"
           >
             <div className="">
               <Paper elevation={4}>

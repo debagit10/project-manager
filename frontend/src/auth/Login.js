@@ -45,42 +45,47 @@ const Login = () => {
   };
 
   return (
-    <Authentication>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-      >
-        <Typography variant="h4" gutterBottom>
-          Login
-        </Typography>
-        <form>
-          <TextField
-            label="Email"
-            type="email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" color="primary">
+    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+      <div className="container">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          height="100vh"
+          sx={{ marginTop: "-100px" }}
+        >
+          <Typography variant="h4" gutterBottom>
             Login
-          </Button>
-        </form>
-        <Typography>
-          Don't have an account?{" "}
-          <a onClick={() => navigate("/signup")}>Sign up</a>
-        </Typography>
-      </Box>
-    </Authentication>
+          </Typography>
+          <form>
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button variant="contained" color="primary" onClick={submit}>
+              Login
+            </Button>
+          </form>
+          <Typography>
+            Don't have an account?{" "}
+            <a onClick={() => navigate("/signup")}> Sign up</a>
+          </Typography>
+        </Box>
+      </div>
+    </div>
   );
 };
 

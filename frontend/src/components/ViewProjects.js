@@ -44,41 +44,43 @@ const ViewProjects = ({ children }) => {
   return (
     <Container>
       <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
-        <Typography>Your projects, {username}</Typography>
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Assgined by</th>
-              <th scope="col">Team</th>
-            </tr>
-          </thead>
-          {projects.map((project) => (
-            <tbody>
-              <tr
-                key={project.project_id}
-                onClick={() => {
-                  navigate("/view_project");
-                  setCookie("projectID", project.project_id);
-                  setCookie("project_title", project.title);
-                  setCookie("assignedBy", project.name);
-                  setCookie("team", project.team_name);
-                  setCookie("desc", project.description);
-                  setCookie("link", project.link);
-                  setCookie("document", project.document);
-                  setCookie("date_given", project.date_given);
-                  setCookie("deadline", project.deadline);
-                  setCookie("givenby", project.assigned_by);
-                  setCookie("givento", project.assigned_to);
-                }}
-              >
-                <td>{project.title}</td>
-                <td>{project.name}</td>
-                <td>{project.team_name}</td>
+        <div className="container">
+          <Typography>Your projects, {username}</Typography>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Assgined by</th>
+                <th scope="col">Team</th>
               </tr>
-            </tbody>
-          ))}
-        </table>
+            </thead>
+            {projects.map((project) => (
+              <tbody>
+                <tr
+                  key={project.project_id}
+                  onClick={() => {
+                    navigate("/view_project");
+                    setCookie("projectID", project.project_id);
+                    setCookie("project_title", project.title);
+                    setCookie("assignedBy", project.name);
+                    setCookie("team", project.team_name);
+                    setCookie("desc", project.description);
+                    setCookie("link", project.link);
+                    setCookie("document", project.document);
+                    setCookie("date_given", project.date_given);
+                    setCookie("deadline", project.deadline);
+                    setCookie("givenby", project.assigned_by);
+                    setCookie("givento", project.assigned_to);
+                  }}
+                >
+                  <td>{project.title}</td>
+                  <td>{project.name}</td>
+                  <td>{project.team_name}</td>
+                </tr>
+              </tbody>
+            ))}
+          </table>
+        </div>
       </div>
     </Container>
   );

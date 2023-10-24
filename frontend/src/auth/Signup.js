@@ -45,7 +45,6 @@ const Signup = () => {
         setError(user.error);
         return;
       } else {
-        setError("Sign up successful");
         setCookie("Email", user.email);
         setCookie("Token", user.token);
         setCookie("userID", user.id);
@@ -58,55 +57,57 @@ const Signup = () => {
   };
 
   return (
-    <Authentication>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        height="100vh"
-      >
-        <Typography variant="h4" gutterBottom>
-          Sign Up
-        </Typography>
-        <form>
-          <TextField
-            label="Username"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Email"
-            type="email"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Confirm password"
-            type="password"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-          />
-          <Button variant="contained" color="primary">
+    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+      <div className="container">
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          // height="100vh"
+        >
+          <Typography variant="h4" gutterBottom>
             Sign Up
-          </Button>
-        </form>
-        <Typography>
-          Already have an account?
-          <a onClick={() => navigate("/login")}>Login</a>
-        </Typography>
-      </Box>
-    </Authentication>
+          </Typography>
+          <form>
+            <TextField
+              label="Username"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Email"
+              type="email"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Confirm password"
+              type="password"
+              variant="outlined"
+              fullWidth
+              margin="normal"
+            />
+            <Button variant="contained" color="primary">
+              Sign Up
+            </Button>
+          </form>
+          <Typography>
+            Already have an account?
+            <a onClick={() => navigate("/login")}> Login</a>
+          </Typography>
+        </Box>
+      </div>
+    </div>
   );
 };
 
