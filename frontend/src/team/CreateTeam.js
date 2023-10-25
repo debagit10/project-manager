@@ -52,7 +52,9 @@ const CreateTeam = () => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Create Team</Button>
+      <Button onClick={() => setOpen(true)} variant="outlined" className="mb-2">
+        Create Team
+      </Button>
       <Dialog
         open={open}
         onClose={() => setOpen(false)}

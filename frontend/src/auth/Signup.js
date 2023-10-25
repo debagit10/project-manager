@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button } from "@mui/material";
 import Authentication from "../pages/Authentication";
+import Logo2 from "../logo/Logo2.png";
 
 const Signup = () => {
   const [email, setEmail] = useState();
@@ -57,55 +58,68 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
       <div className="container">
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          justifyContent="center"
-          // height="100vh"
-        >
-          <Typography variant="h4" gutterBottom>
-            Sign Up
-          </Typography>
-          <form>
-            <TextField
-              label="Username"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Email"
-              type="email"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Confirm password"
-              type="password"
-              variant="outlined"
-              fullWidth
-              margin="normal"
-            />
-            <Button variant="contained" color="primary">
+        <div className="p-3">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+
+            // height="100vh"
+          >
+            <div className="m-3">
+              <img src={Logo2} alt="Nithub logo" className="w-72" />
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: "bold" }}
+                className="italic"
+              >
+                project management platform.
+              </Typography>
+            </div>
+            <Typography variant="h4" gutterBottom>
               Sign Up
-            </Button>
-          </form>
-          <Typography>
-            Already have an account?
-            <a onClick={() => navigate("/login")}> Login</a>
-          </Typography>
-        </Box>
+            </Typography>
+            <form>
+              <TextField
+                label="Username"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Email"
+                type="email"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                label="Confirm password"
+                type="password"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+              />
+              <Button variant="contained" color="primary">
+                Sign Up
+              </Button>
+            </form>
+            <Typography className="mt-3">
+              Already have an account?
+              <a onClick={() => navigate("/login")}> Login</a>
+            </Typography>
+          </Box>
+        </div>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ import Report from "./Report";
 import ViewReport from "./ViewReport";
 import ViewProjects from "../components/ViewProjects";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 import {
   Typography,
@@ -34,6 +35,7 @@ import project from "../images/project.jpg";
 
 const Home = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
+  const navigate = useNavigate();
   const username = cookies.Name;
   return (
     <Container>
@@ -70,9 +72,7 @@ const Home = ({ children }) => {
                   given to you, you're already a member of that team
                 </Typography>{" "}
                 <br />
-                <Button variant="outlined" className="mb-2">
-                  Join team
-                </Button>
+                <JoinTeam />
               </Paper>
             </div>
             <div>
@@ -85,7 +85,11 @@ const Home = ({ children }) => {
                   to keep your performance percentage up.
                 </Typography>
 
-                <Button variant="outlined" className="mb-2">
+                <Button
+                  variant="outlined"
+                  className="mb-2"
+                  onClick={() => navigate("/projects")}
+                >
                   View
                 </Button>
               </Paper>

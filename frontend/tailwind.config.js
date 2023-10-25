@@ -16,6 +16,7 @@ module.exports = {
 
       backgroundImage: {
         Bgg: "url(/src/images/background.jpg)",
+        Bgg2: "url(/src/images/image8.jpg)",
       },
     },
   },

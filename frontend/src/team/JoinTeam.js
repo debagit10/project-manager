@@ -1,12 +1,23 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const JoinTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [teamID, setTeamID] = useState();
   const [error, setError] = useState();
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const userID = cookies.userID;
 
   const submit = async () => {
@@ -32,18 +43,37 @@ const JoinTeam = () => {
   };
 
   return (
-    <div>
-      <button className="btn btn-primary" onClick={() => setIsOpen(!isOpen)}>
-        Join team
-      </button>
-      {isOpen && (
-        <div className="block">
-          <label>Team's ID</label>
-          <input type="text" />
-          <button className="btn btn-primary">Join</button>
-        </div>
-      )}
-    </div>
+    <>
+      <Button onClick={() => setOpen(true)} variant="outlined" className="mb-2">
+        Join Team
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <DialogTitle id="dialog-title">Join Team</DialogTitle>
+        <DialogContent>
+          <div className="container">
+            <form>
+              <TextField
+                label="Team ID"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                onChange={(e) => setTeamID(e.target.value)}
+              />
+            </form>
+          </div>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={submit}>Join</Button>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+        </DialogActions>
+        {error}
+      </Dialog>
+    </>
   );
 };
 

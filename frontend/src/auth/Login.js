@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import LandingPage from "../pages/LandingPage.tsx";
 import Authentication from "../pages/Authentication";
 import { Box, Button, TextField, Typography } from "@mui/material";
+import Logo2 from "../logo/Logo2.png";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -45,16 +46,26 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+    <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
       <div className="container">
         <Box
           display="flex"
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          height="100vh"
-          sx={{ marginTop: "-100px" }}
+          //height="100vh"
+          sx={{ marginTop: "" }}
         >
+          <div className="m-3">
+            <img src={Logo2} alt="Nithub logo" className="w-72" />
+            <Typography
+              variant="body2"
+              sx={{ fontWeight: "bold" }}
+              className="italic"
+            >
+              project management platform.
+            </Typography>
+          </div>
           <Typography variant="h4" gutterBottom>
             Login
           </Typography>
