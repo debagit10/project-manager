@@ -89,6 +89,7 @@ const Login = () => {
             <Button variant="contained" color="primary" onClick={submit}>
               Login
             </Button>
+            <div>{error}</div>
           </form>
           <Typography>
             Don't have an account?{" "}

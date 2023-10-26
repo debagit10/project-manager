@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Container from "../components/Container.tsx";
+import { Paper, Typography, TextField, Button } from "@mui/material";
 
-const ViewReport = () => {
+const ViewReport = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [report, setReport] = useState([]);
   const [comment, setComment] = useState([]);
@@ -24,7 +25,7 @@ const ViewReport = () => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
-  const viewReport = async ({ children }) => {
+  const viewReport = async () => {
     try {
       const response = await axios.post(
         "http://localhost:5000/getReport",
@@ -74,26 +75,51 @@ const ViewReport = () => {
 
   return (
     <Container>
-      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
         {report.map((item) => (
-          <div>
-            <h1>{item.title}</h1>
-            <p>Summary: {item.summary}</p>
-            <p>Submitted on: {item.submitted_on}</p>
-            <p>Report: {item.report}</p>
-            <div class="mb-3">
-              <textarea
-                class="form-control"
-                placeholder="Validate or ask to re-do project with specific instructions"
-                onChange={(e) => setComment(e.target.value)}
-              ></textarea>
-              <button className="btn" onClick={submit}>
-                Send comment
-              </button>
-              <button className="btn" onClick={validate}>
-                Validate report
-              </button>
-            </div>
+          <div className="container">
+            <Paper elevation={4}>
+              <div className="container">
+                <Typography variant="h5">Report for: {item.title}</Typography>
+                <Typography variant="subtitle2">
+                  Submitted on: {item.submitted_on}
+                </Typography>
+                <br />
+                <div>
+                  <Typography variant="body1">Dear {assigned_by},</Typography>
+                  <br />
+                  <Typography variant="body1">
+                    Summary: {item.summary}
+                  </Typography>
+                  <br />
+                  <Typography variant="body1">
+                    View here: {item.report}
+                  </Typography>
+                  <br />
+                  <div class="mb-3">
+                    <TextField
+                      name="Comment"
+                      placeholder="Validate or ask to re-do"
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                    <br />
+                    <br />
+                    <Button variant="outlined" onClick={submit}>
+                      Send comment
+                    </Button>
+                    <br />
+                    <br />
+                    <Typography>
+                      Are you satisfied with the report, if yes, click <br />
+                      <br />
+                      <Button variant="outlined" onClick={validate}>
+                        Validate report
+                      </Button>
+                    </Typography>
+                  </div>
+                </div>
+              </div>
+            </Paper>
           </div>
         ))}
       </div>

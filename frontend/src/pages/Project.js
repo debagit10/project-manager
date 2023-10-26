@@ -2,10 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import Container from "../components/Container.tsx";
+import { Button, Paper, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Project = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [feedBack, setFeedback] = useState([]);
+
+  const navigate = useNavigate();
 
   const title = cookies.project_title;
   const projectID = cookies.projectID;
@@ -40,37 +44,84 @@ const Project = ({ children }) => {
 
   return (
     <Container>
-      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
-        This project was given in {team} by{" "}
-        {userID == givenby ? "You" : assigned_by} on {date_given}.<br />
-        About project:
-        <br /> Title: {title} <br />
-        {desc}
-        <br />
-        The following documents or link can be access :{document} {link}.<br />
-        {userID != givenby &&
-          `Make sure to finish project and report to ${assigned_by} on or before
-      ${deadline}`}{" "}
-        <br />
-        <br />
-        {userID != givenby && (
-          <div>
-            <h6>Feedback: </h6>
-            {feedBack.map((comment) => (
-              <p>{comment.comment}</p>
-            ))}
-          </div>
-        )}
-        <br />
-        {givenby == userID ? (
-          <a href="/view_report" className="btn">
-            View report
-          </a>
-        ) : (
-          <a href="/report" className="btn">
-            Give report
-          </a>
-        )}
+      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
+        <div className="container">
+          <Paper elevation={4}>
+            <div className="container">
+              <Typography variant="h4">Title: {title}</Typography>
+
+              <br />
+              <Typography variant="h6">
+                Assigned by:{" "}
+                <Typography variant="body1">
+                  {userID == givenby ? "You" : assigned_by}
+                </Typography>
+              </Typography>
+
+              <br />
+              <Typography variant="h6">
+                Team: <Typography variant="body1">{team}</Typography>
+              </Typography>
+
+              <br />
+              <Typography variant="h6">
+                Assigned on:{" "}
+                <Typography variant="body1">{date_given}</Typography>
+              </Typography>
+
+              <br />
+              <Typography variant="h6">
+                About project: <Typography variant="body1">{desc}</Typography>
+              </Typography>
+
+              <br />
+              <Typography variant="h6">
+                Document/Link: {document} {link}
+              </Typography>
+
+              <Typography variant="body1" className="m-3">
+                {userID == givenby && `Deadline: ${deadline}`}
+              </Typography>
+
+              <Typography variant="body1" className="m-3">
+                {" "}
+                {userID != givenby &&
+                  `Make sure to finish project and report to ${assigned_by} on or before
+      ${deadline}`}
+              </Typography>
+
+              {userID != givenby && (
+                <div>
+                  <h6>Feedback: </h6>
+                  {feedBack.map((comment) => (
+                    <p>{comment.comment}</p>
+                  ))}
+                </div>
+              )}
+
+              <br />
+              {givenby == userID ? (
+                <Button
+                  onClick={() => navigate("/view_report")}
+                  variant="outlined"
+                  color="primary"
+                  className="m-3"
+                >
+                  View Report
+                </Button>
+              ) : (
+                <Button
+                  onClick={() => navigate("/report")}
+                  variant="outlined"
+                  color="primary"
+                  className="m-3"
+                >
+                  Give report
+                </Button>
+              )}
+            </div>
+          </Paper>
+        </div>
       </div>
     </Container>
   );

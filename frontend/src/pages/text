@@ -2,27 +2,42 @@
 
 
 
-navigate("/viewProject");
-setCookie("projectID", project.project_id);
-setCookie("project_title", project.title);
-setCookie("assignedBy", project.name);
-setCookie("team", project.team_name);
-setCookie("desc", project.description);
-setCookie("link", project.link);
-setCookie("document", project.document);
-setCookie("date_given", project.date_given);
-setCookie("deadline", project.deadline);
-setCookie("givenby", project.assigned_by);
-setCookie("givento", project.assigned_to);
-
-<tr key={project.project_id}>
-  <td>{project.title}</td>
-  <td>{project.name}</td>
-  <td>{project.team_name}</td>
-</tr>;
-
-bg-slate-300
-
+{report.map((item) => (
+          <div className="container">
+            <Paper elevation={4}>
+              <div>
+                <Typography variant="h5">Report for: {item.title}</Typography>
+                <Typography variant="subtitle2">
+                  Submitted on: {item.submitted_on}
+                </Typography>
+              </div>
+              <div>
+                <Typography variant="body1">Dear {assigned_by},</Typography>
+                <Typography variant="body1">
+                  Here is my report:{item.summary} which can be further accessed
+                  in this document/link: {report}
+                </Typography>
+                <Typography variant="body1">Sincerely,</Typography>
+                <Typography variant="body1">{givento}</Typography>
+                <div class="mb-3">
+                  <TextField
+                    placeholder="Validate or ask to re-do project with specific instructions"
+                    onChange={(e) => setComment(e.target.value)}
+                  ></TextField>
+                  <Button variant="outlined" onClick={submit}>
+                    Send comment
+                  </Button>
+                  <Typography>
+                    Are you satisfied with the report, if yes, click this
+                    <Button variant="outlined" onClick={validate}>
+                      Validate report
+                    </Button>
+                  </Typography>
+                </div>
+              </div>
+            </Paper>
+          </div>
+        ))}
 
 
 
