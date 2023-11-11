@@ -24,6 +24,7 @@ const Project = ({ children }) => {
   const givento = cookies.givento;
   const userID = cookies.userID;
   const username = cookies.Name;
+  const token = cookies.Token;
 
   const config = { headers: { "Content-type": "application/json" } };
 
@@ -44,85 +45,89 @@ const Project = ({ children }) => {
 
   return (
     <Container>
-      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
-        <div className="container">
-          <Paper elevation={4}>
-            <div className="container">
-              <Typography variant="h4">Title: {title}</Typography>
+      {token ? (
+        <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
+          <div className="container">
+            <Paper elevation={4}>
+              <div className="container">
+                <Typography variant="h4">Title: {title}</Typography>
 
-              <br />
-              <Typography variant="h6">
-                Assigned by:{" "}
-                <Typography variant="body1">
-                  {userID == givenby ? "You" : assigned_by}
+                <br />
+                <Typography variant="h6">
+                  Assigned by:{" "}
+                  <Typography variant="body1">
+                    {userID == givenby ? "You" : assigned_by}
+                  </Typography>
                 </Typography>
-              </Typography>
 
-              <br />
-              <Typography variant="h6">
-                Team: <Typography variant="body1">{team}</Typography>
-              </Typography>
+                <br />
+                <Typography variant="h6">
+                  Team: <Typography variant="body1">{team}</Typography>
+                </Typography>
 
-              <br />
-              <Typography variant="h6">
-                Assigned on:{" "}
-                <Typography variant="body1">{date_given}</Typography>
-              </Typography>
+                <br />
+                <Typography variant="h6">
+                  Assigned on:{" "}
+                  <Typography variant="body1">{date_given}</Typography>
+                </Typography>
 
-              <br />
-              <Typography variant="h6">
-                About project: <Typography variant="body1">{desc}</Typography>
-              </Typography>
+                <br />
+                <Typography variant="h6">
+                  About project: <Typography variant="body1">{desc}</Typography>
+                </Typography>
 
-              <br />
-              <Typography variant="h6">
-                Document/Link: {document} {link}
-              </Typography>
+                <br />
+                <Typography variant="h6">
+                  Document/Link: {document} {link}
+                </Typography>
 
-              <Typography variant="body1" className="m-3">
-                {userID == givenby && `Deadline: ${deadline}`}
-              </Typography>
+                <Typography variant="body1" className="m-3">
+                  {userID == givenby && `Deadline: ${deadline}`}
+                </Typography>
 
-              <Typography variant="body1" className="m-3">
-                {" "}
-                {userID != givenby &&
-                  `Make sure to finish project and report to ${assigned_by} on or before
+                <Typography variant="body1" className="m-3">
+                  {" "}
+                  {userID != givenby &&
+                    `Make sure to finish project and report to ${assigned_by} on or before
       ${deadline}`}
-              </Typography>
+                </Typography>
 
-              {userID != givenby && (
-                <div>
-                  <h6>Feedback: </h6>
-                  {feedBack.map((comment) => (
-                    <p>{comment.comment}</p>
-                  ))}
-                </div>
-              )}
+                {userID != givenby && (
+                  <div>
+                    <h6>Feedback: </h6>
+                    {feedBack.map((comment) => (
+                      <p>{comment.comment}</p>
+                    ))}
+                  </div>
+                )}
 
-              <br />
-              {givenby == userID ? (
-                <Button
-                  onClick={() => navigate("/view_report")}
-                  variant="outlined"
-                  color="primary"
-                  className="m-3"
-                >
-                  View Report
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => navigate("/report")}
-                  variant="outlined"
-                  color="primary"
-                  className="m-3"
-                >
-                  Give report
-                </Button>
-              )}
-            </div>
-          </Paper>
+                <br />
+                {givenby == userID ? (
+                  <Button
+                    onClick={() => navigate("/view_report")}
+                    variant="outlined"
+                    color="primary"
+                    className="m-3"
+                  >
+                    View Report
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => navigate("/report")}
+                    variant="outlined"
+                    color="primary"
+                    className="m-3"
+                  >
+                    Give report
+                  </Button>
+                )}
+              </div>
+            </Paper>
+          </div>
         </div>
-      </div>
+      ) : (
+        navigate("/login")
+      )}
     </Container>
   );
 };

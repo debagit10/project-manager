@@ -14,6 +14,8 @@ import {
   ListItemIcon,
   ListItemButton,
   Grid,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React, { useState } from "react";
@@ -21,11 +23,28 @@ import Logo2 from "../logo/Logo2.png";
 import Logo3 from "../logo/Logo3.png";
 import Logo1 from "../logo/Logo1.png";
 import { useNavigate } from "react-router-dom";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+import EditProfile from "../modal/EditProfile.js";
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [cookies, setCookie, removeCookies] = useCookies();
+
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
+  };
+
+  const [anchor, setAnchor] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchor);
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchor(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchor(null);
   };
 
   const navigate = useNavigate();
@@ -108,8 +127,63 @@ const Navbar = () => {
             >
               Dashboard
             </Button>
-            <Button sx={{ color: "white" }}>Profile</Button>
+            <Button
+              id="profile-button"
+              aria-control={open ? "resources-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+              endIcon={<KeyboardArrowDownIcon />}
+              sx={{ color: "white" }}
+            >
+              Profile
+            </Button>
           </Box>
+
+          <Menu
+            id="profile-menu"
+            open={open}
+            anchorEl={anchor}
+            MenuListProps={{
+              "aria-labelledby": "resources-button",
+            }}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem>
+              <EditProfile />
+            </MenuItem>
+
+            <MenuItem>
+              <Button
+                onClick={() => {
+                  handleClose();
+                  navigate("/history");
+                }}
+                sx={{ color: "black" }}
+              >
+                History
+              </Button>
+            </MenuItem>
+            <MenuItem>
+              <Button
+                onClick={() => {
+                  handleClose();
+                  removeCookies("Token");
+                }}
+                sx={{ color: "black" }}
+              >
+                Log out
+              </Button>
+            </MenuItem>
+          </Menu>
 
           <Grid sx={{ display: { xs: "block", sm: "none" } }}>
             <img src={Logo3} className="w-24" />

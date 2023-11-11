@@ -5,7 +5,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 //import Project from "./Project";
 import Container from "./Container.tsx";
-import { Typography } from "@mui/material";
+import { Typography, Paper } from "@mui/material";
 
 const ViewTeams = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -31,7 +31,7 @@ const ViewTeams = ({ children }) => {
       );
       const team = response.data;
       setTeams(team);
-      //console.log(team);
+      console.log(teams);
       if (team.error) {
         setError(team.error);
       }
@@ -46,39 +46,56 @@ const ViewTeams = ({ children }) => {
 
   return (
     <Container>
-      <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:h-auto">
-        <div className="container">
-          <Typography>Teams you belong to, {username}</Typography>
-          <table class="table container ">
-            <thead>
-              <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Created by</th>
-                <th scope="col">About</th>
-              </tr>
-            </thead>
-            <tbody>
-              {teams.map((team) => (
-                <tr
-                  key={team.team_id}
-                  onClick={() => {
-                    navigate("/view_team");
-                    setCookie("teamID", team.team_id);
-                    setCookie("team_name", team.team_name);
-                    setCookie("about", team.about);
-                    setCookie("admin", team.admin);
-                    setCookie("adminID", team.admin_id);
-                  }}
-                >
-                  <td>{team.team_name}</td>
-                  <td>{team.admin_id == userID ? "You" : team.admin}</td>
-                  <td>{team.about}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {token ? (
+        <div className="text-center bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
+          <div className="container">
+            <Typography variant="h4">
+              Teams you belong to, {username}
+            </Typography>
+            <Paper elevation={4}>
+              {teams.length > 0 ? (
+                <div className="">
+                  <table class="table ">
+                    <thead>
+                      <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">About</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {teams.map((team) => (
+                        <tr
+                          key={team.team_id}
+                          onClick={() => {
+                            navigate("/view_team");
+                            setCookie("teamID", team.team_id);
+                            setCookie("team_name", team.team_name);
+                            setCookie("about", team.about);
+                            setCookie("admin", team.admin);
+                            setCookie("adminID", team.admin_id);
+                            setCookie("teamCode", team.team_code);
+                          }}
+                        >
+                          <td>{team.team_name}</td>
+                          <td>
+                            {team.admin_id == userID ? "You" : team.admin}
+                          </td>
+                          <td>{team.about}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                "You do not belong to any team. Join or create a team to work with others."
+              )}
+            </Paper>
+          </div>
         </div>
-      </div>
+      ) : (
+        navigate("/login")
+      )}
     </Container>
   );
 };

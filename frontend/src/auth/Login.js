@@ -6,6 +6,7 @@ import LandingPage from "../pages/LandingPage.tsx";
 import Authentication from "../pages/Authentication";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Logo2 from "../logo/Logo2.png";
+import { APIURL } from "../env";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -14,33 +15,40 @@ const Login = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const navigate = useNavigate();
 
+  //const apiUrl = process.env.APIURL;
+
   const submit = async (e) => {
     e.preventDefault();
 
     const config = { headers: { "Content-type": "application/json" } };
 
+    const queryParams = {
+      email: email,
+      password: password,
+    };
+
     if (!email || !password) {
       setError("Please fill all fields");
     } else {
-      const response = await axios.post(
-        "http://localhost:5000/login",
-        {
-          email,
-          password,
-        },
-        config
-      );
-      const user = response.data;
-      console.log(response.data);
-      if (user.error) {
-        setError(user.error);
-      } else {
-        setCookie("Email", user.email);
-        setCookie("Token", user.token);
-        setCookie("userID", user.userID);
-        setCookie("Name", user.name);
-        navigate("/home");
-      }
+      const response = await axios
+        .get(`${APIURL}/api/user/login`, { params: queryParams })
+        .then((response) => {
+          const user = response.data;
+          console.log(response.data);
+          if (user.error) {
+            setError(user.error);
+          } else {
+            setCookie("Email", user.email);
+            setCookie("Token", user.token);
+            setCookie("userID", user.userID);
+            setCookie("Name", user.name);
+            navigate("/home");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
       //console.log(email, password);
     }
   };

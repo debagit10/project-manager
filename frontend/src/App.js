@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-import Addproject from "./modal/Addproject";
 
+import Addproject from "./pages/AddProject.tsx";
 import Authentication from "./pages/Authentication";
 import History from "./pages/History";
 import Home from "./pages/Home";

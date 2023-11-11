@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-import Addproject from "./Addproject";
+//import Addproject from "./Addproject";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const Options = ({ item }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState([]);
+  const [open, setOpen] = useState(false);
+
+  const navigate = useNavigate();
+
   const teamID = cookies.teamID;
   const username = cookies.Name;
   const userID = cookies.userID;
@@ -14,10 +29,25 @@ const Options = ({ item }) => {
   const about = cookies.about;
   const admin = cookies.admin;
   const adminID = cookies.adminID;
-  const itemID = cookies.itemID;
   const itemName = cookies.itemName;
+  const itemID = item.id;
 
   const config = { headers: { "Content-type": "application/json" } };
+
+  const min_admin = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/admin",
+        { userID, teamID },
+        config
+      );
+      //console.log(response);
+      setIsAdmin(response.data[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(isAdmin);
 
   const removeMember = async () => {
     try {
@@ -29,7 +59,6 @@ const Options = ({ item }) => {
         },
         config
       );
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -42,183 +71,116 @@ const Options = ({ item }) => {
         { teamID, itemID },
         config
       );
-      console.log(response);
+      //console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const removeAdmin = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/removeAdmin",
+        { teamID, itemID },
+        config
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    min_admin();
+  }, []);
+
   return (
     <div>
-      <div>
-        <button
-          type="button"
-          class="btn "
-          data-bs-toggle="modal"
-          data-bs-target={`#${item.id}`}
-        >
-          {username == item.name ? "You" : item.name}
-          {item.min_admin == true && " (admin)"}
-        </button>
-
-        <div
-          class="modal fade"
-          id="makeAdmin"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body">
-                {item.min_admin == true
-                  ? `Dismiss ${itemName} as admin`
-                  : `Make ${itemName} admin?`}
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={addAdmin}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="modal fade"
-          id="removeMember"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-body">
-                Remove {itemName} from {name}?
-              </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  onClick={removeMember}
-                >
-                  Yes
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  No
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div
-          class="modal fade"
-          id={item.id}
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-
-              <div class="modal-body">
-                <div class="col-md-6">
-                  <form>
-                    <div class="mb-3">
-                      {(userID == adminID && adminID != item.id) ||
-                      item.min_admin == true ? (
-                        <button
-                          className="btn"
-                          data-bs-toggle="modal"
-                          data-bs-target="#removeMember"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCookie("itemID", item.id);
-                            setCookie("itemName", item.name);
-                          }}
-                        >
-                          Remove {item.name} from {name}
-                        </button>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-
-                    <div class="mb-3">
-                      <button
-                        className="btn"
-                        onClick={(e) => {
-                          e.preventDefault();
-
-                          setCookie("itemID", item.id);
-                          setCookie("itemName", item.name);
-                        }}
-                        data-bs-toggle="modal"
-                        data-bs-target="#makeAdmin"
-                      >
-                        {(adminID != item.id && userID == adminID) ||
-                        item.min_admin == true
-                          ? item.min_admin == true
-                            ? `Dismiss ${item.name} as admin`
-                            : `Dismiss ${item.name} as admin`
-                          : ""}
-
-                        {adminID == userID ||
-                        adminID != item.id ||
-                        userID != item.id
-                          ? ""
-                          : `Dismiss ${item.name} as admin`}
-                      </button>
-                    </div>
-
-                    <div item={item}>
-                      {(userID == adminID && item.id != adminID) ||
-                      item.min_admin == true ? (
-                        <a
-                          href="/addProject"
-                          className="btn"
-                          onClick={() => {
-                            setCookie("itemID", item.id);
-                            setCookie("itemName", item.name);
-                          }}
-                        >
-                          Assign a project
-                        </a>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Button
+        onClick={() => setOpen(true)}
+        className="mb-2"
+        sx={{ color: "black" }}
+      >
+        {item.name}
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => setOpen(false)}
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <DialogContent>
+          {isAdmin.min_admin == true ||
+          (userID == adminID && item.min_admin == null) ? (
+            <Button
+              onClick={() => {
+                addAdmin();
+                setOpen(false);
+              }}
+              sx={{ color: "black" }}
+            >
+              {item.min_admin != true &&
+                adminID != item.id &&
+                `Make ${item.name} an admin`}
+            </Button>
+          ) : (
+            isAdmin.min_admin == true ||
+            (userID == adminID && item.min_admin == true && (
+              <Button
+                onClick={() => {
+                  removeAdmin();
+                  setOpen(false);
+                }}
+                sx={{ color: "black" }}
+              >
+                {item.min_admin == true &&
+                  adminID != item.id &&
+                  adminID == userID &&
+                  `Dismiss ${item.name} as admin`}
+              </Button>
+            ))
+          )}
+          {}
+          <br />
+          {(userID == adminID && item.id != adminID && (
+            <Button
+              onClick={() => {
+                navigate("/add_project");
+                setCookie("itemID", item.id);
+                setCookie("itemName", item.name);
+              }}
+              sx={{ color: "black" }}
+            >
+              Assign a project
+            </Button>
+          )) ||
+            (isAdmin.min_admin == true && (
+              <Button
+                onClick={() => {
+                  navigate("/add_project");
+                  setCookie("itemID", item.id);
+                  setCookie("itemName", item.name);
+                }}
+                sx={{ color: "black" }}
+              >
+                Assign a project
+              </Button>
+            ))}
+          <br />
+          {userID == adminID || isAdmin.min_admin == true ? (
+            <Button
+              onClick={() => {
+                removeMember();
+                setOpen(false);
+              }}
+              sx={{ color: "black" }}
+            >
+              Remove {item.name} from {name}
+            </Button>
+          ) : (
+            ""
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -15,21 +16,23 @@ import {
 
 const JoinTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
-  const [teamID, setTeamID] = useState();
+  const [teamCode, setTeamCode] = useState();
   const [error, setError] = useState();
   const [open, setOpen] = useState(false);
   const userID = cookies.userID;
 
+  const navigate = useNavigate();
+
   const submit = async () => {
-    if (!teamID) {
-      setError("Please insert team's ID");
+    if (!teamCode) {
+      setError("Please insert team's code");
     }
 
     const config = { headers: { "Content-type": "application/json" } };
     try {
       const response = await axios.post(
         "http://localhost:5000/joinTeam",
-        { userID, teamID },
+        { userID, teamCode },
         config
       );
       const join = response.data;
@@ -62,13 +65,20 @@ const JoinTeam = () => {
                 variant="outlined"
                 fullWidth
                 margin="normal"
-                onChange={(e) => setTeamID(e.target.value)}
+                onChange={(e) => setTeamCode(e.target.value)}
               />
             </form>
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={submit}>Join</Button>
+          <Button
+            onClick={() => {
+              submit();
+              //setOpen(false);
+            }}
+          >
+            Join
+          </Button>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
         </DialogActions>
         {error}

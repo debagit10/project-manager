@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Box,
@@ -20,6 +21,8 @@ const CreateTeam = () => {
   const [error, setError] = useState();
   const [open, setOpen] = useState(false);
 
+  const navigate = useNavigate();
+
   const userID = cookies.userID;
   const username = cookies.Name;
 
@@ -31,7 +34,7 @@ const CreateTeam = () => {
     const config = { headers: { "Content-type": "application/json" } };
     try {
       const response = await axios.post(
-        "http://localhost:5000/createTeam",
+        "http://localhost:5000/api/team/create",
         {
           name,
           about,
