@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Paper, Typography } from "@mui/material";
 import Container from "./Container.tsx";
+import { APIURL } from "../env";
 
 const ViewProjects = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -18,15 +19,15 @@ const ViewProjects = ({ children }) => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
+  const data = {
+    userID: userID,
+  };
+
   const getProject = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/getProject",
-        {
-          userID,
-        },
-        config
-      );
+      const response = await axios.get(`${APIURL}/api/project/get`, {
+        params: data,
+      });
 
       console.log(response.data);
       setProjects(response.data);

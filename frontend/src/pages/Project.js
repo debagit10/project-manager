@@ -4,6 +4,7 @@ import axios from "axios";
 import Container from "../components/Container.tsx";
 import { Button, Paper, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { APIURL } from "../env";
 
 const Project = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -29,14 +30,17 @@ const Project = ({ children }) => {
   const config = { headers: { "Content-type": "application/json" } };
 
   const viewComment = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/viewComment",
-      {
-        projectID,
-      },
-      config
-    );
-    setFeedback(response.data);
+    const data = {
+      projectID: projectID,
+    };
+    try {
+      const response = await axios.get(`${APIURL}/api/comment/view`, {
+        params: data,
+      });
+      setFeedback(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

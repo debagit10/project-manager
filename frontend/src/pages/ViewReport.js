@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container.tsx";
 import { Paper, Typography, TextField, Button } from "@mui/material";
+import { APIURL } from "../env";
 
 const ViewReport = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -30,14 +31,13 @@ const ViewReport = ({ children }) => {
   const config = { headers: { "Content-type": "application/json" } };
 
   const viewReport = async () => {
+    const data = {
+      projectID: projectID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/getReport",
-        {
-          projectID,
-        },
-        config
-      );
+      const response = await axios.get(`${APIURL}/api/report/get`, {
+        params: data,
+      });
       setReport(response.data);
 
       //console.log(response.data);
@@ -47,13 +47,14 @@ const ViewReport = ({ children }) => {
   };
 
   const submit = async () => {
+    const data = {
+      comment: comment,
+      projectID: projectID,
+    };
     try {
       const response = await axios.post(
-        "http://localhost:5000/comment",
-        {
-          projectID,
-          comment,
-        },
+        `${APIURL}/api/comment/add`,
+        data,
         config
       );
     } catch (error) {
@@ -62,10 +63,13 @@ const ViewReport = ({ children }) => {
   };
 
   const validate = async () => {
+    const data = {
+      projectID: projectID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/validate",
-        { projectID },
+      const response = await axios.put(
+        `${APIURL}/api/comment/validate`,
+        data,
         config
       );
     } catch (error) {
@@ -115,7 +119,7 @@ const ViewReport = ({ children }) => {
                       <br />
                       <br />
                       <Typography>
-                        Are you satisfied with the report, if yes, click <br />
+                        Are you satisfied with the report? if yes, click <br />
                         <br />
                         <Button variant="outlined" onClick={validate}>
                           Validate report

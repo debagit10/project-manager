@@ -7,6 +7,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { useNavigate } from "react-router-dom";
+import { APIURL } from "../env";
 
 const Addproject = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -26,22 +27,28 @@ const Addproject = ({ children }) => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
+  const data = {
+    itemID: itemID,
+    userID: userID,
+    title: title,
+    description: description,
+    document: document,
+    links: links,
+    deadline: deadline,
+    team: team,
+  };
+
   const submit = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/addProject",
-      {
-        itemID,
-        userID,
-        title,
-        description,
-        document,
-        links,
-        deadline,
-        team,
-      },
-      config
-    );
-    console.log(response);
+    try {
+      const response = await axios.post(
+        `${APIURL}/api/project/add`,
+        data,
+        config
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

@@ -4,8 +4,7 @@ import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 import { Box, Typography, TextField, Button, Input } from "@mui/material";
 import Logo2 from "../logo/Logo2.png";
-import { CloudinaryContext, Image } from "cloudinary-react";
-import { Cloudinary } from "cloudinary-core";
+import { APIURL } from "../env";
 
 const Signup = () => {
   const [email, setEmail] = useState();
@@ -19,7 +18,7 @@ const Signup = () => {
 
   const submit = async (e) => {
     e.preventDefault();
-    if (!name || !password || !confirmPassword || !email || !pic) {
+    if (!name || !password || !confirmPassword || !email) {
       setError("Please fill all fields");
       return;
     } else {
@@ -31,15 +30,18 @@ const Signup = () => {
       }
     }
 
+    const data = {
+      name: name,
+      password: password,
+      email: email,
+      pic: pic,
+    };
+
     const config = { headers: { "Content-type": "application/json" } };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/user/login",
-        {
-          email,
-          name,
-          password,
-        },
+        `${APIURL}/api/user/signup`,
+        data,
         config
       );
       const user = response.data;
@@ -58,35 +60,6 @@ const Signup = () => {
       console.log(error);
     }
   };
-
-  const cloudinaryCore = new Cloudinary({ cloud_name: "debacodes" });
-
-  const handleUpload = (event) => {
-    const file = event.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "chat_app"); // Create an upload preset in your Cloudinary dashboard
-
-    fetch(`https://api.cloudinary.com/v1_1/debacodes/image/upload`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPic(data.secure_url); // Pass the URL to your parent component
-
-        setPic(
-          cloudinaryCore.url(data.public_id, {
-            width: 150,
-            height: 150,
-            crop: "fill",
-          })
-        );
-      })
-      .catch((error) => console.error("Error uploading image:", error));
-  };
-
-  console.log(pic);
 
   return (
     <div className="bg-Bgg bg-cover bg-no-repeat h-screen sm:[90rem]">
@@ -145,22 +118,6 @@ const Signup = () => {
                 margin="normal"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-
-              <input
-                accept="image/*"
-                //style={{ display: "none" }}
-                id="contained-button-file"
-                type="file"
-                onChange={handleUpload}
-              />
-              {pic && (
-                <Image
-                  cloudName="debacodes"
-                  publicId={pic}
-                  width="150"
-                  height="150"
-                />
-              )}
 
               <br />
               <Button variant="contained" color="primary" onClick={submit}>

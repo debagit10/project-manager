@@ -14,6 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { APIURL } from "../env";
 
 const Options = ({ item }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -50,38 +51,40 @@ const Options = ({ item }) => {
   console.log(isAdmin);
 
   const removeMember = async () => {
+    const data = {
+      itemID: itemID,
+      teamID: teamID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/removeMember",
-        {
-          itemID,
-          teamID,
-        },
-        config
-      );
+      const response = await axios.delete(`${APIURL}/api/team/removeMember`, {
+        params: data,
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   const addAdmin = async () => {
+    const data = {
+      itemID: itemID,
+      teamID: teamID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/addAdmin",
-        { teamID, itemID },
-        config
-      );
-      //console.log(response);
+      const response = await axios.put(`${APIURL}/api/admin/add`, data, config);
     } catch (error) {
       console.log(error);
     }
   };
 
   const removeAdmin = async () => {
+    const data = {
+      itemID: itemID,
+      teamID: teamID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/removeAdmin",
-        { teamID, itemID },
+      const response = await axios.put(
+        `${APIURL}/api/admin/remove`,
+        data,
         config
       );
     } catch (error) {

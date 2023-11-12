@@ -13,6 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { APIURL } from "../env";
 
 const CreateTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -32,15 +33,16 @@ const CreateTeam = () => {
     }
 
     const config = { headers: { "Content-type": "application/json" } };
+    const data = {
+      name: name,
+      about: about,
+      userID: userID,
+      username: username,
+    };
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/team/create",
-        {
-          name,
-          about,
-          userID,
-          username,
-        },
+        `${APIURL}/api/team/create`,
+        data,
         config
       );
       const team = response.data;

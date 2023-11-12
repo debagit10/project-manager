@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Options from "../modal/Options";
 import Container from "../components/Container.tsx";
 import { Button, formGroupClasses, Paper, Typography } from "@mui/material";
+import { APIURL } from "../env";
 
 const Team = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -27,74 +28,73 @@ const Team = ({ children }) => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
-  const view = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/viewTeam",
-      { teamID },
-      config
-    );
-    setDetail(response.data);
-
-    //console.log(response.data);
+  const data = {
+    teamID: teamID,
   };
 
-  const getAdmin = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/getAdmin",
-      {
-        teamID,
-      },
-      config
-    );
-    //console.log(response.data);
-    setViewAdmin(response.data);
+  const view = async () => {
+    try {
+      const response = await axios.get(`${APIURL}/api/team/view`, {
+        params: data,
+      });
+      setDetail(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const teamProjects = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/teamProject",
-      { teamID },
-      config
-    );
-    //console.log(response.data);
-    setProjects(response.data);
-    console.log(projects);
+    const data = {
+      teamID: teamID,
+    };
+    try {
+      const response = await axios.get(`${APIURL}/api/team/projects`, {
+        params: data,
+      });
+
+      setProjects(response.data);
+      console.log(projects);
+    } catch (error) {
+      console.error;
+    }
   };
 
   const leaveTeam = async () => {
+    const data = { userID: userID, teamID: teamID };
+
     try {
-      const response = await axios.post(
-        "http://localhost:5000/leaveTeam",
-        { userID, teamID },
-        config
-      );
+      const response = await axios.delete(`${APIURL}/api/team/leave`, {
+        params: data,
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   const deleteTeam = async () => {
+    const data = {
+      teamID: teamID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/deleteTeam",
-        { teamID },
-        config
-      );
+      const response = await axios.delete(`${APIURL}/api/team/delete`, {
+        params: data,
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   const min_admin = async () => {
+    const data = {
+      teamID: teamID,
+      userID: userID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/admin",
-        { userID, teamID },
-        config
-      );
-      // console.log(response);
+      const response = await axios.get(`${APIURL}/api/team/admin`, {
+        params: data,
+      });
+
       setIsAdmin(response.data[0]);
-      //console.log(isAdmin);
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +102,6 @@ const Team = ({ children }) => {
 
   useEffect(() => {
     view();
-    //getAdmin();
     teamProjects();
     min_admin();
   });

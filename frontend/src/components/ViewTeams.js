@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 //import Project from "./Project";
 import Container from "./Container.tsx";
 import { Typography, Paper } from "@mui/material";
+import { APIURL } from "../env";
 
 const ViewTeams = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -20,15 +21,15 @@ const ViewTeams = ({ children }) => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
+  const data = {
+    userID: userID,
+  };
+
   const getTeams = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:5000/getTeams",
-        {
-          userID,
-        },
-        config
-      );
+      const response = await axios.get(`${APIURL}/api/team/get`, {
+        params: data,
+      });
       const team = response.data;
       setTeams(team);
       console.log(teams);

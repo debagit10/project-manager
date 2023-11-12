@@ -4,6 +4,7 @@ import { useCookies } from "react-cookie";
 import Container from "../components/Container.tsx";
 import { useNavigate } from "react-router-dom";
 import { Paper, Typography } from "@mui/material";
+import { APIURL } from "../env";
 
 const History = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -17,15 +18,18 @@ const History = ({ children }) => {
   const config = { headers: { "Content-type": "application/json" } };
 
   const getHistory = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/getProject",
-      {
-        userID,
-      },
-      config
-    );
-    setHistory(response.data);
-    console.log(response.data);
+    const data = {
+      userID: userID,
+    };
+    try {
+      const response = await axios.get(`${APIURL}/api/project/get`, {
+        params: data,
+      });
+      setHistory(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
