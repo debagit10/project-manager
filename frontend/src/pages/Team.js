@@ -28,11 +28,11 @@ const Team = ({ children }) => {
 
   const config = { headers: { "Content-type": "application/json" } };
 
-  const data = {
-    teamID: teamID,
-  };
-
   const view = async () => {
+    const data = {
+      teamID: teamID,
+    };
+
     try {
       const response = await axios.get(`${APIURL}/api/team/view`, {
         params: data,

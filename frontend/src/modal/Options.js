@@ -32,16 +32,19 @@ const Options = ({ item }) => {
   const adminID = cookies.adminID;
   const itemName = cookies.itemName;
   const itemID = item.id;
+  const itemEmail = item.email;
 
   const config = { headers: { "Content-type": "application/json" } };
 
   const min_admin = async () => {
+    const data = {
+      teamID: teamID,
+      userID: userID,
+    };
     try {
-      const response = await axios.post(
-        "http://localhost:5000/admin",
-        { userID, teamID },
-        config
-      );
+      const response = await axios.get(`${APIURL}/api/team/admin`, {
+        params: data,
+      });
       //console.log(response);
       setIsAdmin(response.data[0]);
     } catch (error) {
@@ -150,6 +153,7 @@ const Options = ({ item }) => {
                 navigate("/add_project");
                 setCookie("itemID", item.id);
                 setCookie("itemName", item.name);
+                setCookie("itemEmail", item.email);
               }}
               sx={{ color: "black" }}
             >
@@ -162,6 +166,7 @@ const Options = ({ item }) => {
                   navigate("/add_project");
                   setCookie("itemID", item.id);
                   setCookie("itemName", item.name);
+                  setCookie("itemEmail", item.email);
                 }}
                 sx={{ color: "black" }}
               >

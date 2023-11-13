@@ -24,6 +24,7 @@ const Addproject = ({ children }) => {
   const userID = cookies.userID;
   const team = cookies.teamID;
   const token = cookies.Token;
+  const itemEmail = cookies.itemEmail;
 
   const config = { headers: { "Content-type": "application/json" } };
 
@@ -36,6 +37,7 @@ const Addproject = ({ children }) => {
     links: links,
     deadline: deadline,
     team: team,
+    itemEmail: itemEmail,
   };
 
   const submit = async () => {

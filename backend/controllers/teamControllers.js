@@ -85,9 +85,7 @@ const joinTeam = async (req, res) => {
 
     console.log(members.rows);
   } catch (error) {
-    if (error) {
-      res.json({ error: "incorrect code or team does not exist" });
-    }
+    console.log(error);
   }
 };
 
@@ -114,7 +112,7 @@ const viewTeam = async (req, res) => {
   const { teamID } = req.query;
   try {
     const response = await pool.query(
-      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id, users.name, users.id, team_members.min_admin FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE team_members.team_id = $1",
+      "SELECT teams.team_name, teams.about, teams.admin, teams.admin_id, users.name, users.id, users.email, team_members.min_admin FROM teams INNER JOIN team_members ON teams.team_id = team_members.team_id INNER JOIN users ON team_members.member_id = users.id WHERE team_members.team_id = $1",
       [teamID]
     );
 

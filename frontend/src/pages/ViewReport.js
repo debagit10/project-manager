@@ -27,6 +27,7 @@ const ViewReport = ({ children }) => {
   const userID = cookies.userID;
   const username = cookies.Name;
   const token = cookies.Token;
+  const assigned_to_email = cookies.assigned_to_email;
 
   const config = { headers: { "Content-type": "application/json" } };
 
@@ -65,6 +66,9 @@ const ViewReport = ({ children }) => {
   const validate = async () => {
     const data = {
       projectID: projectID,
+      title: title,
+      team: team,
+      assigned_to_email: assigned_to_email,
     };
     try {
       const response = await axios.put(

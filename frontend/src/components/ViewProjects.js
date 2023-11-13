@@ -75,6 +75,11 @@ const ViewProjects = ({ children }) => {
                           setCookie("deadline", project.deadline);
                           setCookie("givenby", project.assigned_by);
                           setCookie("givento", project.assigned_to);
+                          setCookie("itemEmail", project.email);
+                          setCookie(
+                            "assigned_to_email",
+                            project.assigned_to_email
+                          );
                         }}
                       >
                         <td>{project.title}</td>

@@ -1,9 +1,23 @@
 const pool = require("../db.js");
 const { v4: uuidv4 } = require("uuid");
 
+const nodemailer = require("nodemailer");
+
+const { EMAIL, PASSWORD } = require("../env2");
+
 const projectReport = async (req, res) => {
-  const { title, project_id, summary, deadline, assigned_by, userID, report } =
-    req.body;
+  const {
+    title,
+    project_id,
+    summary,
+    deadline,
+    assigned_by,
+    userID,
+    report,
+    itemEmail,
+    userEmail,
+    team,
+  } = req.body;
 
   const date = Date.now();
   const id = uuidv4();
@@ -29,6 +43,27 @@ const projectReport = async (req, res) => {
         ]
       );
       res.json(response);
+      if (response) {
+        let config = {
+          service: "gmail",
+          auth: {
+            user: EMAIL,
+            pass: PASSWORD,
+          },
+        };
+
+        let transporter = nodemailer.createTransport(config);
+
+        let message = {
+          from: userEmail, // sender address
+          to: itemEmail, // list of receivers
+          subject: "New report", // Subject line
+          text: ``, // plain text body
+          html: `There's a report for project: ${title} on team: ${team} Check the report http://localhost:3000`, // html body
+        };
+
+        transporter.sendMail(message);
+      }
       //console.log(response);
     } else {
       const update = await pool.query(
@@ -36,6 +71,27 @@ const projectReport = async (req, res) => {
         [summary, report, project_id]
       );
       res.send(update);
+      if (update) {
+        let config = {
+          service: "gmail",
+          auth: {
+            user: EMAIL,
+            pass: PASSWORD,
+          },
+        };
+
+        let transporter = nodemailer.createTransport(config);
+
+        let message = {
+          from: userEmail, // sender address
+          to: itemEmail, // list of receivers
+          subject: "Update on a report", // Subject line
+          text: ``, // plain text body
+          html: `There has been an update on the report for project: ${title} on team: ${team} Check the report http://localhost:3000`, // html body
+        };
+
+        transporter.sendMail(message);
+      }
     }
   } catch (error) {
     console.log(error);

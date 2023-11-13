@@ -27,6 +27,9 @@ const Report = ({ children }) => {
   const userID = cookies.userID;
   const username = cookies.Name;
   const token = cookies.Token;
+  const itemEmail = cookies.itemEmail;
+  const userEmail = cookies.Email;
+  const assigned_to_email = cookies.assigned_to_email;
 
   const config = { headers: { "Content-type": "application/json" } };
 
@@ -38,6 +41,9 @@ const Report = ({ children }) => {
     userID: userID,
     summary: summary,
     report: report,
+    itemEmail: itemEmail,
+    userEmail: userEmail,
+    team: team,
   };
 
   const submit = async () => {
