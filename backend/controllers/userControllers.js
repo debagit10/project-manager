@@ -6,7 +6,7 @@ const pool = require("../db.js");
 
 const signup = async (req, res) => {
   const { email, name, password, pic } = req.body;
-  console.log(email, name, password);
+  //console.log(email, name, password);
   const id = uuidv4();
   const salt = bcrypt.genSaltSync(10);
   const hashed_password = bcrypt.hashSync(password, salt);
@@ -71,9 +71,44 @@ const editProfile = async (req, res) => {
       "UPDATE users SET name = $1, email = $2, pic = $3 WHERE id = $4",
       [updatedName, updatedEmail, updatedPic, userID]
     );
+    res, json(response);
   } catch (error) {
     console.log(error);
   }
 };
 
-module.exports = { signup, login, editProfile };
+const getUser = async (req, res) => {
+  const { email } = req.query;
+  console.log(email);
+  try {
+    const response = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+    if (!response.rows.length) {
+      res.json({ error: "User does not exist" });
+    } else {
+      res.json(response.rows);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const changePassword = async (req, res) => {
+  const { userID, newPassword } = req.body;
+
+  const salt = bcrypt.genSaltSync(10);
+  const password = bcrypt.hashSync(newPassword, salt);
+
+  try {
+    const response = await pool.query(
+      "UPDATE users SET password = $1 WHERE id = $2 ",
+      [password, userID]
+    );
+    res.json(response);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { signup, login, editProfile, getUser, changePassword };

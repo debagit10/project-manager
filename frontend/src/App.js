@@ -15,6 +15,7 @@ import ViewProjects from "./components/ViewProjects";
 import ViewTeams from "./components/ViewTeams";
 import Login from "./auth/Login";
 import Signup from "./auth/Signup";
+import Password from "./pages/Password";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/teams" Component={ViewTeams} />
         <Route path="/signup" Component={Signup} />
         <Route path="/login" Component={Login} />
+        <Route path="/forgotPassword" Component={Password} />
       </Routes>
     </div>
   );

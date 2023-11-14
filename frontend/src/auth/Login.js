@@ -103,6 +103,9 @@ const Login = () => {
             Don't have an account?{" "}
             <a onClick={() => navigate("/signup")}> Sign up</a>
           </Typography>
+          <Typography>
+            <a onClick={() => navigate("/forgotPassword")}>Forgot password? </a>
+          </Typography>
         </Box>
       </div>
     </div>
