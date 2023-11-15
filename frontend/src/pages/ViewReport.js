@@ -137,7 +137,7 @@ const ViewReport = ({ children }) => {
           ))}
         </div>
       ) : (
-        navigate("/login")
+        navigate("/")
       )}
     </Container>
   );

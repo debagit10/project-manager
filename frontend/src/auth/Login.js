@@ -7,12 +7,16 @@ import Authentication from "../pages/Authentication";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Logo2 from "../logo/Logo2.png";
 import { APIURL } from "../env";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [error, setError] = useState();
   const [cookies, setCookie, removeCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   //const apiUrl = process.env.APIURL;
@@ -29,28 +33,50 @@ const Login = () => {
 
     if (!email || !password) {
       setError("Please fill all fields");
-    } else {
-      const response = await axios
-        .get(`${APIURL}/api/user/login`, { params: queryParams })
-        .then((response) => {
-          const user = response.data;
-          console.log(response.data);
-          if (user.error) {
-            setError(user.error);
-          } else {
-            setCookie("Email", user.email);
-            setCookie("Token", user.token);
-            setCookie("userID", user.userID);
-            setCookie("Name", user.name);
-            navigate("/home");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-
-      //console.log(email, password);
+      toast.error(error, {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 2000, // Set the autoClose time in milliseconds
+        hideProgressBar: false, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
+      return;
     }
+    setLoading(true);
+    const response = await axios
+      .get(`${APIURL}/api/user/login`, { params: queryParams })
+      .then((response) => {
+        const user = response.data;
+        //console.log(response.data);
+
+        if (user.error) {
+          setError(user.error);
+          setTimeout(() => {
+            // After the operation is complete, set loading back to false
+            setLoading(false);
+            toast.error(error, {
+              position: toast.POSITION.TOP_CENTER, // Set the position
+              autoClose: 2000, // Set the autoClose time in milliseconds
+              hideProgressBar: false, // Set to true to hide the progress bar
+              closeOnClick: true, // Close the toast when clicked
+              pauseOnHover: true, // Pause the autoClose timer when hovering
+              draggable: true, // Allow the toast to be dragged
+            });
+          }, 2000);
+        } else {
+          setCookie("Email", user.email);
+          setCookie("Token", user.token);
+          setCookie("userID", user.userID);
+          setCookie("Name", user.name);
+          navigate("/home");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    //console.log(email, password);
   };
 
   return (
@@ -95,9 +121,13 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button variant="contained" color="primary" onClick={submit}>
-              Login
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Login"
+              )}
             </Button>
-            <div>{error}</div>
+            <ToastContainer />
           </form>
           <Typography>
             Don't have an account?{" "}

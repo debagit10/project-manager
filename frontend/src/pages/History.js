@@ -73,7 +73,7 @@ const History = ({ children }) => {
           </div>
         </div>
       ) : (
-        navigate("/auth")
+        navigate("/")
       )}
     </Container>
   );

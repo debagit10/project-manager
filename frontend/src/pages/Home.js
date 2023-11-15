@@ -92,7 +92,7 @@ const Home = ({ children }) => {
           </div>
         </div>
       ) : (
-        navigate("/login")
+        navigate("/")
       )}
     </Container>
   );

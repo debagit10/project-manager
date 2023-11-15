@@ -204,7 +204,7 @@ const Team = ({ children }) => {
           </div>
         </div>
       ) : (
-        navigate("/login")
+        navigate("/")
       )}
     </Container>
   );

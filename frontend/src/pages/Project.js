@@ -130,7 +130,7 @@ const Project = ({ children }) => {
           </div>
         </div>
       ) : (
-        navigate("/login")
+        navigate("/")
       )}
     </Container>
   );
