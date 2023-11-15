@@ -3,11 +3,11 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Container from "../components/Container.tsx";
 import { Button, Paper, TextField, Typography } from "@mui/material";
-import { DateTimePicker } from "@mui/x-date-pickers";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+//import { DatePicker, TimePicker, DateTimePicker } from "@mui/x-date-pickers";
 import { useNavigate } from "react-router-dom";
 import { APIURL } from "../env";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Addproject = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -16,6 +16,7 @@ const Addproject = ({ children }) => {
   const [document, setDocument] = useState();
   const [links, setLinks] = useState();
   const [deadline, setDeadline] = useState();
+  const [selectedDateTime, setSelectedDateTime] = useState(null);
 
   const navigate = useNavigate();
 
@@ -41,15 +42,26 @@ const Addproject = ({ children }) => {
   };
 
   const submit = async () => {
-    try {
-      const response = await axios.post(
-        `${APIURL}/api/project/add`,
-        data,
-        config
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
+    if (!title || !description || !deadline) {
+      toast.warning("Title, description and deadline required", {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 2000, // Set the autoClose time in milliseconds
+        hideProgressBar: true, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
+    } else {
+      try {
+        const response = await axios.post(
+          `${APIURL}/api/project/add`,
+          data,
+          config
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
@@ -67,33 +79,45 @@ const Addproject = ({ children }) => {
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    onChange={(e) => setTitle(e.target.value)}
                   />
                   <TextField
                     label="Description"
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                   <TextField
-                    label="Document"
+                    //label="Document"
                     variant="outlined"
+                    type="file"
                     fullWidth
                     margin="normal"
+                    onChange={(e) => setDocument(e.target.value)}
                   />
                   <TextField
                     label="Link(s)"
                     variant="outlined"
                     fullWidth
                     margin="normal"
+                    onChange={(e) => setLinks(e.target.value)}
                   />
-                  {/*<input
-                  type="datetime-local"
-                  onChange={(e) => setDeadline(e.target.value)}
-  />*/}
+
+                  <TextField
+                    type="datetime-local"
+                    //label="Link(s)"
+                    variant="outlined"
+                    fullWidth
+                    margin="normal"
+                    onChange={(e) => setDeadline(e.target.value)}
+                  />
 
                   <Button variant="outlined" color="primary" onClick={submit}>
                     Submit
                   </Button>
+
+                  <ToastContainer className="m-3" />
                 </form>
               </div>
             </Paper>
