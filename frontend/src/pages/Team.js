@@ -55,7 +55,7 @@ const Team = ({ children }) => {
       setProjects(response.data);
       console.log(projects);
     } catch (error) {
-      console.error;
+      console.log(error);
     }
   };
 
