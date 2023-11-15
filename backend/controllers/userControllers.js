@@ -17,21 +17,20 @@ const signup = async (req, res) => {
 
     if (users.rows.length) {
       res.send({ error: "User exists" });
-      console.log({ error: "User exists" });
+      //console.log({ error: "User exists" });
+    } else {
+      const signup = await pool.query(
+        "INSERT INTO users(id,email,name,password,pic) VALUES($1, $2, $3, $4, $5)",
+        [id, email, name, hashed_password, pic]
+      );
+      //console.log(signup);
+      //res.send(signup);
+      const token = jwt.sign({ email }, "secret", { expiresIn: "1hr" });
+
+      res.json({ email, name, token, id, pic });
     }
-
-    const signup = await pool.query(
-      "INSERT INTO users(id,email,name,password,pic) VALUES($1, $2, $3, $4, $5)",
-      [id, email, name, hashed_password, pic]
-    );
-    console.log(signup);
-    //res.send(signup);
-    const token = jwt.sign({ email }, "secret", { expiresIn: "1hr" });
-
-    res.json({ email, name, token, id, pic });
   } catch (error) {
     console.log(error);
-    res.send(error);
   }
 };
 

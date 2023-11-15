@@ -53,7 +53,7 @@ const Team = ({ children }) => {
       });
 
       setProjects(response.data);
-      console.log(projects);
+      //console.log(projects);
     } catch (error) {
       console.log(error);
     }

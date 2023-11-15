@@ -14,6 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import { APIURL } from "../env";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateTeam = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -21,6 +24,7 @@ const CreateTeam = () => {
   const [about, setAbout] = useState();
   const [error, setError] = useState();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,17 +33,25 @@ const CreateTeam = () => {
 
   const submit = async () => {
     if (!name || !about) {
-      setError("Please fill out all fields");
+      toast.warning("Please fill all fields", {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 3000, // Set the autoClose time in milliseconds
+        hideProgressBar: true, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
+      return;
     }
-
-    const config = { headers: { "Content-type": "application/json" } };
-    const data = {
-      name: name,
-      about: about,
-      userID: userID,
-      username: username,
-    };
     try {
+      setLoading(true);
+      const config = { headers: { "Content-type": "application/json" } };
+      const data = {
+        name: name,
+        about: about,
+        userID: userID,
+        username: username,
+      };
       const response = await axios.post(
         `${APIURL}/api/team/create`,
         data,
@@ -48,7 +60,20 @@ const CreateTeam = () => {
       const team = response.data;
       //console.log(team);
       if (team.error) {
-        setError(team.error);
+        setTimeout(() => {
+          // After the operation is complete, set loading back to false
+          setLoading(false);
+          toast.error(team.error, {
+            position: toast.POSITION.TOP_CENTER, // Set the position
+            autoClose: 3000, // Set the autoClose time in milliseconds
+            hideProgressBar: true, // Set to true to hide the progress bar
+            closeOnClick: true, // Close the toast when clicked
+            pauseOnHover: true, // Pause the autoClose timer when hovering
+            draggable: true, // Allow the toast to be dragged
+          });
+        }, 2000);
+      } else {
+        navigate("/teams");
       }
     } catch (error) {
       console.error(error);
@@ -88,10 +113,16 @@ const CreateTeam = () => {
           </div>
         </DialogContent>
         <DialogActions>
-          <Button onClick={submit}>Create</Button>
+          <Button onClick={submit}>
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Create"
+            )}
+          </Button>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <ToastContainer />
         </DialogActions>
-        {error}
       </Dialog>
     </>
   );

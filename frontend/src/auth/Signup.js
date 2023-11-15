@@ -2,9 +2,19 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, TextField, Button, Input } from "@mui/material";
+import {
+  Box,
+  Typography,
+  TextField,
+  Button,
+  Input,
+  formGroupClasses,
+} from "@mui/material";
 import Logo2 from "../logo/Logo2.png";
 import { APIURL } from "../env";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Signup = () => {
   const [email, setEmail] = useState();
@@ -14,16 +24,32 @@ const Signup = () => {
   const [pic, setPic] = useState();
   const [error, setError] = useState();
   const [cookies, setCookie, removeCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
     if (!name || !password || !confirmPassword || !email) {
-      setError("Please fill all fields");
+      toast.error("Please fill all fields", {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 2000, // Set the autoClose time in milliseconds
+        hideProgressBar: true, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
       return;
     } else {
       if (password != confirmPassword) {
-        setError("Passwords do not match");
+        toast.error("Passwords do not match", {
+          position: toast.POSITION.TOP_CENTER, // Set the position
+          autoClose: 2000, // Set the autoClose time in milliseconds
+          hideProgressBar: true, // Set to true to hide the progress bar
+          closeOnClick: true, // Close the toast when clicked
+          pauseOnHover: true, // Pause the autoClose timer when hovering
+          draggable: true, // Allow the toast to be dragged
+        });
+
         return;
       } else {
         console.log(email, name, password);
@@ -39,21 +65,34 @@ const Signup = () => {
 
     const config = { headers: { "Content-type": "application/json" } };
     try {
+      setLoading(true);
       const response = await axios.post(
         `${APIURL}/api/user/signup`,
         data,
         config
       );
       const user = response.data;
-      console.log(response.data);
+      //console.log(response.data);
       if (user.error) {
-        setError(user.error);
+        setTimeout(() => {
+          setLoading(false);
+          toast.error(user.error, {
+            position: toast.POSITION.TOP_CENTER, // Set the position
+            autoClose: 2000, // Set the autoClose time in milliseconds
+            hideProgressBar: true, // Set to true to hide the progress bar
+            closeOnClick: true, // Close the toast when clicked
+            pauseOnHover: true, // Pause the autoClose timer when hovering
+            draggable: true, // Allow the toast to be dragged
+          });
+        }, 2000);
+
         return;
       } else {
         setCookie("Email", user.email);
         setCookie("Token", user.token);
         setCookie("userID", user.id);
         setCookie("Name", user.name);
+
         navigate("/home");
       }
     } catch (error) {
@@ -120,11 +159,20 @@ const Signup = () => {
               />
 
               <br />
-              <Button variant="contained" color="primary" onClick={submit}>
-                Sign Up
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={submit}
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress size={24} color="inherit" />
+                ) : (
+                  "Sign up"
+                )}
               </Button>
             </form>
-            {error}
+            <ToastContainer />
             <Typography className="mt-3">
               Already have an account?
               <a onClick={() => navigate("/login")}> Login</a>

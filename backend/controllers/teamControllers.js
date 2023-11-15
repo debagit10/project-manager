@@ -51,8 +51,11 @@ const joinTeam = async (req, res) => {
     const check = await pool.query("SELECT * FROM teams WHERE team_code = $1", [
       teamCode,
     ]);
-    //res.json(check);
-    if (check) {
+    //console.log(check);
+    if (!check.rows.length) {
+      res.json({ error: "Team does not exist" });
+      return;
+    } else {
       const teamID = check.rows[0].team_id;
 
       const members = await pool.query(
@@ -79,8 +82,6 @@ const joinTeam = async (req, res) => {
         console.log(join);
         res.json({ teamID, userID });
       }
-    } else {
-      res.send("incorrect code or team does not exist");
     }
 
     console.log(members.rows);

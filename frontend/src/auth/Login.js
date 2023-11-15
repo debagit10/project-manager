@@ -32,49 +32,48 @@ const Login = () => {
     };
 
     if (!email || !password) {
-      setError("Please fill all fields");
-      toast.error(error, {
+      toast.error("Please fill all fields", {
         position: toast.POSITION.TOP_CENTER, // Set the position
         autoClose: 2000, // Set the autoClose time in milliseconds
-        hideProgressBar: false, // Set to true to hide the progress bar
+        hideProgressBar: true, // Set to true to hide the progress bar
         closeOnClick: true, // Close the toast when clicked
         pauseOnHover: true, // Pause the autoClose timer when hovering
         draggable: true, // Allow the toast to be dragged
       });
       return;
     }
-    setLoading(true);
-    const response = await axios
-      .get(`${APIURL}/api/user/login`, { params: queryParams })
-      .then((response) => {
-        const user = response.data;
-        //console.log(response.data);
+    try {
+      setLoading(true);
+      const response = await axios
+        .get(`${APIURL}/api/user/login`, { params: queryParams })
+        .then((response) => {
+          const user = response.data;
+          //console.log(response.data);
 
-        if (user.error) {
-          setError(user.error);
-          setTimeout(() => {
-            // After the operation is complete, set loading back to false
-            setLoading(false);
-            toast.error(error, {
-              position: toast.POSITION.TOP_CENTER, // Set the position
-              autoClose: 2000, // Set the autoClose time in milliseconds
-              hideProgressBar: false, // Set to true to hide the progress bar
-              closeOnClick: true, // Close the toast when clicked
-              pauseOnHover: true, // Pause the autoClose timer when hovering
-              draggable: true, // Allow the toast to be dragged
-            });
-          }, 2000);
-        } else {
-          setCookie("Email", user.email);
-          setCookie("Token", user.token);
-          setCookie("userID", user.userID);
-          setCookie("Name", user.name);
-          navigate("/home");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+          if (user.error) {
+            setTimeout(() => {
+              // After the operation is complete, set loading back to false
+              setLoading(false);
+              toast.error(user.error, {
+                position: toast.POSITION.TOP_CENTER, // Set the position
+                autoClose: 2000, // Set the autoClose time in milliseconds
+                hideProgressBar: true, // Set to true to hide the progress bar
+                closeOnClick: true, // Close the toast when clicked
+                pauseOnHover: true, // Pause the autoClose timer when hovering
+                draggable: true, // Allow the toast to be dragged
+              });
+            }, 2000);
+          } else {
+            setCookie("Email", user.email);
+            setCookie("Token", user.token);
+            setCookie("userID", user.userID);
+            setCookie("Name", user.name);
+            navigate("/home");
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
 
     //console.log(email, password);
   };
@@ -120,7 +119,12 @@ const Login = () => {
               margin="normal"
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" color="primary" onClick={submit}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={submit}
+              disabled={loading}
+            >
               {loading ? (
                 <CircularProgress size={24} color="inherit" />
               ) : (
