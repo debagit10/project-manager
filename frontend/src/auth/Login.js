@@ -19,6 +19,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { POSTGRES_URL } = process.env;
+
   //const apiUrl = process.env.APIURL;
 
   const submit = async (e) => {
@@ -45,7 +47,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios
-        .get(`${APIURL}/api/user/login`, { params: queryParams })
+        .get(`${POSTGRES_URL}/api/user/login`, { params: queryParams })
         .then((response) => {
           const user = response.data;
           //console.log(response.data);

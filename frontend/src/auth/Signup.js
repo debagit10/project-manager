@@ -27,6 +27,8 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const { POSTGRES_URL } = process.env;
+
   const submit = async (e) => {
     e.preventDefault();
     if (!name || !password || !confirmPassword || !email) {
@@ -67,7 +69,7 @@ const Signup = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${APIURL}/api/user/signup`,
+        `${POSTGRES_URL}/api/user/signup`,
         data,
         config
       );
