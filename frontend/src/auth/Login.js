@@ -47,7 +47,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios
-        .get(`${POSTGRES_URL}/api/user/login`, { params: queryParams })
+        .get(`${APIURL}/api/user/login`, { params: queryParams })
         .then((response) => {
           const user = response.data;
           //console.log(response.data);
