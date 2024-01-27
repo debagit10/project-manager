@@ -5,11 +5,13 @@ import { useNavigate } from "react-router-dom";
 import { Paper, Typography } from "@mui/material";
 import Container from "./Container.tsx";
 import { APIURL } from "../env";
+import { multiSectionDigitalClockSectionClasses } from "@mui/x-date-pickers";
 
 const ViewProjects = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [error, setError] = useState();
   const [projects, setProjects] = useState([]);
+  const [isDone, setIsDone] = useState(false);
 
   const navigate = useNavigate();
 
@@ -41,6 +43,12 @@ const ViewProjects = ({ children }) => {
       getProject();
     }
   }, []);
+
+  projects.map((project) => {
+    if (project.done == true) {
+      setIsDone(true);
+    }
+  });
 
   return (
     <Container>

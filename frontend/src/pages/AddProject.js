@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { APIURL } from "../env";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Addproject = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
@@ -17,6 +18,7 @@ const Addproject = ({ children }) => {
   const [links, setLinks] = useState();
   const [deadline, setDeadline] = useState();
   const [selectedDateTime, setSelectedDateTime] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -52,6 +54,7 @@ const Addproject = ({ children }) => {
         draggable: true, // Allow the toast to be dragged
       });
     } else {
+      setLoading(true);
       try {
         const response = await axios.post(
           `${APIURL}/api/project/add`,
@@ -59,6 +62,7 @@ const Addproject = ({ children }) => {
           config
         );
         console.log(response);
+        navigate("/projects");
       } catch (error) {
         console.log(error);
       }
@@ -114,7 +118,11 @@ const Addproject = ({ children }) => {
                   />
 
                   <Button variant="outlined" color="primary" onClick={submit}>
-                    Submit
+                    {loading ? (
+                      <CircularProgress size={24} color="inherit" />
+                    ) : (
+                      "Submit"
+                    )}
                   </Button>
 
                   <ToastContainer className="m-3" />

@@ -11,27 +11,59 @@ import {
   Button,
 } from "@mui/material";
 
+import { APIURL } from "../env";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const EditProfile = () => {
-  const [open, setOpen] = useState(false);
   const [cookies, setCookie, removeCookies] = useCookies();
-  const [updatedName, setUpdatedName] = useState();
-  const [updatedEmail, setUpdatedEmail] = useState();
-  const [updatedPic, setUpdatedPic] = useState();
 
   const username = cookies.Name;
   const email = cookies.Email;
   const pic = cookies.Pic;
   const userID = cookies.userID;
 
+  const [open, setOpen] = useState(false);
+
+  const [updatedName, setUpdatedName] = useState(username);
+  const [updatedEmail, setUpdatedEmail] = useState(email);
+  const [updatedPic, setUpdatedPic] = useState();
+  const [loading, setLoading] = useState(false);
+
   const config = { headers: { "Content-type": "application/json" } };
 
   const submit = async () => {
-    const response = await axios.post(
-      "http://localhost:5000/editProfile",
-      config,
-      { updatedName, updatedEmail, updatedPic, userID }
-    );
-    console.log(response);
+    const data = {
+      updatedName,
+      updatedEmail,
+      updatedPic,
+      userID,
+    };
+
+    const config = {
+      headers: { "Content-type": "application/json" },
+    };
+
+    try {
+      setLoading(true);
+      const response = await axios.put(`${APIURL}/api/user/edit`, data, config);
+      if (response.data.command == "UPDATE") {
+        setTimeout(() => {
+          setLoading(false);
+          toast.success("Profile updated", {
+            position: toast.POSITION.TOP_CENTER, // Set the position
+            autoClose: 2000, // Set the autoClose time in milliseconds
+            hideProgressBar: true, // Set to true to hide the progress bar
+            closeOnClick: true, // Close the toast when clicked
+            pauseOnHover: true, // Pause the autoClose timer when hovering
+            draggable: true, // Allow the toast to be dragged
+          });
+        }, 2000);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -53,13 +85,13 @@ const EditProfile = () => {
         <DialogContent>
           <form>
             <TextField
-              value={username}
+              value={updatedName}
               fullWidth
               margin="normal"
               onChange={(e) => setUpdatedName(e.target.value)}
             />
             <TextField
-              value={email}
+              value={updatedEmail}
               fullWidth
               margin="normal"
               onChange={(e) => setUpdatedEmail(e.target.value)}
@@ -68,14 +100,18 @@ const EditProfile = () => {
           <DialogActions>
             <Button
               onClick={() => {
-                setOpen(false);
                 submit();
               }}
             >
-              Submit
+              {loading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Submit"
+              )}
             </Button>
             <Button onClick={() => setOpen(false)}>Cancel</Button>
           </DialogActions>
+          <ToastContainer />
         </DialogContent>
       </Dialog>
     </div>

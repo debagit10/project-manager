@@ -5,11 +5,16 @@ import { useNavigate } from "react-router-dom";
 import Container from "../components/Container.tsx";
 import { Paper, Typography, TextField, Button } from "@mui/material";
 import { APIURL } from "../env";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const ViewReport = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [report, setReport] = useState([]);
   const [comment, setComment] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
   const navigate = useNavigate();
 
@@ -48,16 +53,38 @@ const ViewReport = ({ children }) => {
   };
 
   const submit = async () => {
+    if (!comment) {
+      toast.warning("Add a comment please", {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 2000, // Set the autoClose time in milliseconds
+        hideProgressBar: true, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
+    }
     const data = {
       comment: comment,
       projectID: projectID,
     };
+    setLoading1(true);
     try {
       const response = await axios.post(
         `${APIURL}/api/comment/add`,
         data,
         config
       );
+      setTimeout(() => {
+        setLoading1(false);
+        toast.success("Comment added", {
+          position: toast.POSITION.TOP_CENTER, // Set the position
+          autoClose: 2000, // Set the autoClose time in milliseconds
+          hideProgressBar: true, // Set to true to hide the progress bar
+          closeOnClick: true, // Close the toast when clicked
+          pauseOnHover: true, // Pause the autoClose timer when hovering
+          draggable: true, // Allow the toast to be dragged
+        });
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -70,12 +97,24 @@ const ViewReport = ({ children }) => {
       team: team,
       assigned_to_email: assigned_to_email,
     };
+    setLoading(true);
     try {
       const response = await axios.put(
         `${APIURL}/api/comment/validate`,
         data,
         config
       );
+      setTimeout(() => {
+        setLoading(false);
+        toast.success("Report successfully validated", {
+          position: toast.POSITION.TOP_CENTER, // Set the position
+          autoClose: 2000, // Set the autoClose time in milliseconds
+          hideProgressBar: true, // Set to true to hide the progress bar
+          closeOnClick: true, // Close the toast when clicked
+          pauseOnHover: true, // Pause the autoClose timer when hovering
+          draggable: true, // Allow the toast to be dragged
+        });
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -118,7 +157,11 @@ const ViewReport = ({ children }) => {
                       <br />
                       <br />
                       <Button variant="outlined" onClick={submit}>
-                        Send comment
+                        {loading1 ? (
+                          <CircularProgress size={24} color="inherit" />
+                        ) : (
+                          "Add comment"
+                        )}
                       </Button>
                       <br />
                       <br />
@@ -126,12 +169,17 @@ const ViewReport = ({ children }) => {
                         Are you satisfied with the report? if yes, click <br />
                         <br />
                         <Button variant="outlined" onClick={validate}>
-                          Validate report
+                          {loading ? (
+                            <CircularProgress size={24} color="inherit" />
+                          ) : (
+                            "Validate report"
+                          )}
                         </Button>
                       </Typography>
                     </div>
                   </div>
                 </div>
+                <ToastContainer />
               </Paper>
             </div>
           ))}

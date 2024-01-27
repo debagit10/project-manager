@@ -70,7 +70,7 @@ const editProfile = async (req, res) => {
       "UPDATE users SET name = $1, email = $2, pic = $3 WHERE id = $4",
       [updatedName, updatedEmail, updatedPic, userID]
     );
-    res, json(response);
+    res.json(response);
   } catch (error) {
     console.log(error);
   }

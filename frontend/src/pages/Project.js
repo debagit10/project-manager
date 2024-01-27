@@ -43,6 +43,22 @@ const Project = ({ children }) => {
     }
   };
 
+  // Create a new Date object using the timestamp
+  const date = new Date(date_given);
+
+  // Extract individual components of the date and time
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-based, so add 1
+  const year = date.getFullYear();
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  // Format the components to dd/mm/yyyy and hh:mm:ss
+  const formattedDate = `${day}/${month}/${year}`;
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+
   useEffect(() => {
     viewComment();
   });
@@ -72,7 +88,7 @@ const Project = ({ children }) => {
                 <br />
                 <Typography variant="h6">
                   Assigned on:{" "}
-                  <Typography variant="body1">{date_given}</Typography>
+                  <Typography variant="body1">{formattedDate}</Typography>
                 </Typography>
 
                 <br />

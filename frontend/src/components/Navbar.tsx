@@ -55,7 +55,11 @@ const Navbar = () => {
       sx={{ backgroundColor: "#3273e3", height: "100vh" }}
     >
       <div className="w-24 p-2">
-        <img src={Logo3} style={{ flexGrow: 1 }} />
+        <img
+          src={Logo3}
+          style={{ flexGrow: 1 }}
+          onClick={() => navigate("/home")}
+        />
       </div>
 
       <Divider />
@@ -84,6 +88,12 @@ const Navbar = () => {
             <ListItemText sx={{ color: "white" }}>Dashboard</ListItemText>
           </ListItemButton>
         </ListItem>
+        <ListItem>
+          <ListItemButton onClick={() => navigate("/history")}>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText sx={{ color: "white" }}>History</ListItemText>
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
@@ -104,7 +114,12 @@ const Navbar = () => {
             <MenuIcon />
           </IconButton>
           <Grid sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}>
-            <img src={Logo3} className="w-24" />
+            <img
+              src={Logo3}
+              className="w-24"
+              style={{ flexGrow: 1 }}
+              onClick={() => navigate("/home")}
+            />
             <p className="italic text-white">project management platform.</p>
           </Grid>
 
@@ -129,7 +144,7 @@ const Navbar = () => {
             </Button>
             <Button
               id="profile-button"
-              aria-control={open ? "resources-menu" : undefined}
+              aria-control={open ? "profile-menu" : undefined}
               aria-haspopup="true"
               aria-expanded={open ? "true" : undefined}
               onClick={handleClick}
@@ -186,7 +201,12 @@ const Navbar = () => {
           </Menu>
 
           <Grid sx={{ display: { xs: "block", sm: "none" } }}>
-            <img src={Logo3} className="w-24" />
+            <img
+              src={Logo3}
+              className="w-24"
+              onClick={() => navigate("/home")}
+            />
+            <p className="italic text-white">project management platform.</p>
           </Grid>
         </Toolbar>
       </AppBar>

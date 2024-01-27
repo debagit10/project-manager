@@ -5,9 +5,13 @@ import axios from "axios";
 import Container from "../components/Container.tsx";
 import { APIURL } from "../env";
 import { Button, Paper } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Report = ({ children }) => {
   const [cookies, setCookie, removeCookies] = useCookies();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const [summary, setSummary] = useState();
@@ -46,8 +50,44 @@ const Report = ({ children }) => {
     team: team,
   };
 
+  const date = new Date(date_given);
+
+  // Extract individual components of the date and time
+  const day = date.getDate();
+  const month = date.getMonth() + 1; // Months are zero-based, so add 1
+  const year = date.getFullYear();
+
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const seconds = date.getSeconds();
+
+  // Format the components to dd/mm/yyyy and hh:mm:ss
+  const formattedDate = `${day}/${month}/${year}`;
+  const formattedTime = `${hours}:${minutes}:${seconds}`;
+
   const submit = async () => {
-    const response = await axios.post(`${APIURL}/api/report/add`, data, config);
+    if (!summary || !report) {
+      toast.warning("Title, description and deadline required", {
+        position: toast.POSITION.TOP_CENTER, // Set the position
+        autoClose: 2000, // Set the autoClose time in milliseconds
+        hideProgressBar: true, // Set to true to hide the progress bar
+        closeOnClick: true, // Close the toast when clicked
+        pauseOnHover: true, // Pause the autoClose timer when hovering
+        draggable: true, // Allow the toast to be dragged
+      });
+    } else {
+      setLoading(true);
+      try {
+        const response = await axios.post(
+          `${APIURL}/api/report/add`,
+          data,
+          config
+        );
+        navigate("/view_project");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   return (
@@ -64,7 +104,11 @@ const Report = ({ children }) => {
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Date given</label>
-                  <input type="text" class="form-control" value={date_given} />
+                  <input
+                    type="text"
+                    class="form-control"
+                    value={formattedDate}
+                  />
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Deadline</label>
@@ -87,7 +131,11 @@ const Report = ({ children }) => {
                   ></textarea>
                 </div>
                 <Button onClick={submit} variant="outlined">
-                  Submit report
+                  {loading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Submit report"
+                  )}
                 </Button>
               </div>
             </Paper>

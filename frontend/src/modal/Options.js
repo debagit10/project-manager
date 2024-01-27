@@ -86,7 +86,7 @@ const Options = ({ item }) => {
     };
     try {
       const response = await axios.put(
-        `${APIURL}/api/admin/remove`,
+        `${APIURL}/api/admin/remove`, 
         data,
         config
       );
