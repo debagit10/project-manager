@@ -7,7 +7,7 @@ const projectRoutes = require("./routes/projectRoutes.js");
 const reportRoutes = require("./routes/reportRoutes.js");
 const commentRoutes = require("./routes/commentRoutes");
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.SERVER_PORT || 5000;
 
 const app = express();
 app.use(cors());
