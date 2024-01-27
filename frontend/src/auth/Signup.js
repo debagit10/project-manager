@@ -69,7 +69,7 @@ const Signup = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-        `${APIURL}/api/user/signup`,
+        `${POSTGRES_URL}/api/user/signup`,
         data,
         config
       );
