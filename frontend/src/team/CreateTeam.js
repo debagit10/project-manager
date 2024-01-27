@@ -26,6 +26,8 @@ const CreateTeam = () => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { POSTGRES_URL } = process.env;
+
   const navigate = useNavigate();
 
   const userID = cookies.userID;
@@ -53,7 +55,7 @@ const CreateTeam = () => {
         username: username,
       };
       const response = await axios.post(
-        `${APIURL}/api/team/create`,
+        `${POSTGRES_URL}/api/team/create`,
         data,
         config
       );
