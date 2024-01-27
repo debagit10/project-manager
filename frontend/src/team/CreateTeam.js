@@ -55,7 +55,7 @@ const CreateTeam = () => {
         username: username,
       };
       const response = await axios.post(
-        `${POSTGRES_URL}/api/team/create`,
+        `${APIURL}/api/team/create`,
         data,
         config
       );
