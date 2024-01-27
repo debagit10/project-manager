@@ -5,8 +5,9 @@ const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + "?sslmode=require",
 });
 
-const { SERVER_PORT } = process.env;
-
-console.log(SERVER_PORT);
+pool.connect((err) => {
+  if (err) throw err;
+  console.log("Connected to PostgreSQL successfully");
+});
 
 module.exports = pool;
