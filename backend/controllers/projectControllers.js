@@ -4,7 +4,9 @@ const pool = require("../db.js");
 
 const nodemailer = require("nodemailer");
 
-const { EMAIL, PASSWORD } = require("../env2");
+require("dotenv").config();
+
+const { EMAIL, PASSWORD } = process.env;
 
 const addProject = async (req, res) => {
   const {

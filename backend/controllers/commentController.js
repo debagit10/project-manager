@@ -3,7 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const nodemailer = require("nodemailer");
 
-const { EMAIL, PASSWORD } = require("../env2");
+const { EMAIL, PASSWORD } = process.env;
 
 const comment = async (req, res) => {
   const { comment, projectID } = req.body;
