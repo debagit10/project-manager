@@ -7,6 +7,7 @@ import Authentication from "../pages/Authentication";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import Logo2 from "../logo/Logo2.png";
 import { APIURL } from "../env";
+import { POSTGRES_URL } from "../env";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +20,9 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { POSTGRES_URL } = process.env;
+  //const { POSTGRES_URL } = process.env;
+
+  console.log(POSTGRES_URL);
 
   //const apiUrl = process.env.APIURL;
 
