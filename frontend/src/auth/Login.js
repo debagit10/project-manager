@@ -11,7 +11,7 @@ import { POSTGRES_URL } from "../env";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "dotenv";
+//import "dotenv";
 
 const Login = () => {
   const [email, setEmail] = useState();
