@@ -24,7 +24,7 @@ const Login = () => {
   //const { POSTGRES_URL } = process.env;
 
   console.log(POSTGRES_URL);
-  console.log(apiUrl);
+  console.log(APIURL);
 
   const apiUrl = process.env.API_URL;
 
