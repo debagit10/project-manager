@@ -24,7 +24,7 @@ const Login = () => {
 
   console.log(POSTGRES_URL);
 
-  //const apiUrl = process.env.APIURL;
+  const apiUrl = process.env.API_URL;
 
   const submit = async (e) => {
     e.preventDefault();
@@ -35,6 +35,8 @@ const Login = () => {
       email: email,
       password: password,
     };
+
+    console.log(apiUrl);
 
     if (!email || !password) {
       toast.error("Please fill all fields", {
