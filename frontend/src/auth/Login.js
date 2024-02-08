@@ -11,6 +11,7 @@ import { POSTGRES_URL } from "../env";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "dotenv";
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -23,6 +24,7 @@ const Login = () => {
   //const { POSTGRES_URL } = process.env;
 
   console.log(POSTGRES_URL);
+  console.log(apiUrl);
 
   const apiUrl = process.env.API_URL;
 
@@ -35,8 +37,6 @@ const Login = () => {
       email: email,
       password: password,
     };
-
-    console.log(apiUrl);
 
     if (!email || !password) {
       toast.error("Please fill all fields", {
