@@ -52,7 +52,7 @@ const Login = () => {
     try {
       setLoading(true);
       const response = await axios
-        .get(`${API_URL}/api/user/login`, { params: queryParams }, config)
+        .get(`${APIURL}/api/user/login`, { params: queryParams }, config)
         .then((response) => {
           const user = response.data;
           //console.log(response.data);
