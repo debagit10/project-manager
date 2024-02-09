@@ -22,15 +22,7 @@ const ViewReport = ({ children }) => {
   const projectID = cookies.projectID;
   const assigned_by = cookies.assignedBy;
   const team = cookies.team;
-  const desc = cookies.desc;
-  const link = cookies.link;
-  const document = cookies.document;
-  const date_given = cookies.date_given;
-  const deadline = cookies.deadline;
-  const givenby = cookies.givenby;
-  const givento = cookies.givento;
-  const userID = cookies.userID;
-  const username = cookies.Name;
+
   const token = cookies.Token;
   const assigned_to_email = cookies.assigned_to_email;
 
@@ -46,7 +38,7 @@ const ViewReport = ({ children }) => {
         headers: config.headers,
       });
       setReport(response.data);
-
+      console.log(response);
       //console.log(response.data);
     } catch (error) {
       console.log(error);
