@@ -36,6 +36,7 @@ const Project = ({ children }) => {
     try {
       const response = await axios.get(`${APIURL}/api/comment/view`, {
         params: data,
+        headers: config.headers,
       });
       setFeedback(response.data);
     } catch (error) {

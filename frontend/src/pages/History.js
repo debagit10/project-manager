@@ -24,6 +24,7 @@ const History = ({ children }) => {
     try {
       const response = await axios.get(`${APIURL}/api/project/get`, {
         params: data,
+        headers: config.headers,
       });
       setHistory(response.data);
       console.log(response.data);

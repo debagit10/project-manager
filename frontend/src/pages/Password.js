@@ -11,6 +11,8 @@ const Password = () => {
   const [cookies, setCookie, removeCookies] = useCookies();
   const [error, setError] = useState();
 
+  const config = { headers: { "Content-type": "application/json" } };
+
   const verify = async () => {
     if (!email) {
       setError("Please enter your email address");
@@ -22,6 +24,7 @@ const Password = () => {
 
         const response = await axios.get(`${APIURL}/api/user/get`, {
           params: data,
+          headers: config.headers,
         });
         console.log(response.data);
         if (response.data.error) {

@@ -36,6 +36,7 @@ const Team = ({ children }) => {
     try {
       const response = await axios.get(`${APIURL}/api/team/view`, {
         params: data,
+        headers: config.headers,
       });
       setDetail(response.data);
     } catch (error) {
