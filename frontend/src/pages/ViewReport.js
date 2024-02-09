@@ -43,6 +43,7 @@ const ViewReport = ({ children }) => {
     try {
       const response = await axios.get(`${APIURL}/api/report/get`, {
         params: data,
+        headers: config.headers,
       });
       setReport(response.data);
 
