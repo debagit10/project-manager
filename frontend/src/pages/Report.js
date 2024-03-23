@@ -21,15 +21,9 @@ const Report = ({ children }) => {
   const project_id = cookies.projectID;
   const assigned_by = cookies.assignedBy;
   const team = cookies.team;
-  const desc = cookies.desc;
-  const link = cookies.link;
-  const document = cookies.document;
   const date_given = cookies.date_given;
   const deadline = cookies.deadline;
-  const givenby = cookies.givenby;
-  const givento = cookies.givento;
   const userID = cookies.userID;
-  const username = cookies.Name;
   const token = cookies.Token;
   const itemEmail = cookies.itemEmail;
   const userEmail = cookies.Email;
