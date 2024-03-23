@@ -25,7 +25,7 @@ This is live link of the platform [click here](https://project-manager-wine.verc
 
 Before getting started, make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en) installed
+- [Node.js](https://nodejs.org/en)
 - [Git](https://git-scm.com/)
-- [npm](https://www.npmjs.com/) (Node package manager) installed
+- [npm](https://www.npmjs.com/) (Node package manager)
 - A code editor such as [Visual studio code](https://code.visualstudio.com/) or any other preferred code environment
